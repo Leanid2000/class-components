@@ -1,5 +1,4 @@
 import { Component } from 'react';
-import './App.css';
 import SearchComponent from './components/SearchComponent/SearchComponent';
 import DisplayComponent from './components/DisplayComponent/DisplayComponent';
 import type { Pokemon } from './utils/interfaces/pokemonInterfaces';
@@ -19,6 +18,10 @@ interface PokemonSpeciesText {
   language: { name: string };
 }
 
+interface PokemonInf {
+  sprites: { front_default: string };
+}
+
 interface PokemonsResult {
   results: Pokemon[];
   name: string;
@@ -33,8 +36,6 @@ class App extends Component<Record<string, never>, State> {
 
   componentDidMount() {
     const inputValueInStorage = localStorage.getItem('inputValue');
-    console.log(inputValueInStorage);
-
     this.getResults(inputValueInStorage || '');
   }
 
@@ -42,15 +43,21 @@ class App extends Component<Record<string, never>, State> {
     const getSpecies = await fetch(
       `https://pokeapi.co/api/v2/pokemon-species/${value}`
     );
-    if (!getSpecies.ok) {
+    const information = await fetch(
+      `https://pokeapi.co/api/v2/pokemon/${value}`
+    );
+    if (!getSpecies.ok || !information.ok) {
       throw new Error(`Error: ${getSpecies.status} ${getSpecies.statusText}`);
     }
     const species: PokemonSpecies = await getSpecies.json();
     const speciesEn = species.flavor_text_entries.find(
       (element) => element.language.name === 'en'
     );
+    const fullInformation: PokemonInf = await information.json();
+    const img: string = fullInformation.sprites.front_default;
+
     if (speciesEn) {
-      return speciesEn;
+      return { speciesEn: speciesEn, img: img };
     }
   };
 
@@ -72,10 +79,12 @@ class App extends Component<Record<string, never>, State> {
       if (pokemonsResult.results) {
         const descriptions: Pokemon[] = await Promise.all(
           pokemonsResult.results.map(async (pokemon: Pokemon) => {
-            const speciesEn = await this.getSpecies(pokemon.name);
+            const result = await this.getSpecies(pokemon.name);
             return {
               name: pokemon.name,
-              descriptions: speciesEn?.flavor_text.replace(/\n|\f/g, ' ') || '',
+              descriptions:
+                result?.speciesEn?.flavor_text.replace(/\n|\f/g, ' ') || '',
+              img: result?.img || '',
             };
           })
         );
@@ -86,10 +95,14 @@ class App extends Component<Record<string, never>, State> {
           const descriptions: Pokemon[] = await Promise.all([
             {
               name: pokemonsResult.name,
-              descriptions: species.flavor_text.replace(/\n|\f/g, ' '),
+              descriptions: species.speciesEn.flavor_text.replace(
+                /\n|\f/g,
+                ' '
+              ),
+              img: species?.img || '',
             },
           ]);
-          this.processingResult(descriptions);
+          this.processingResult(descriptions, localValue);
         }
       }
     } catch {

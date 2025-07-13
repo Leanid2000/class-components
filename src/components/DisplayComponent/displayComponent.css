@@ -1,0 +1,23 @@
+.list {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin: auto;
+  gap: 10px;
+  padding: 40px;
+}
+
+.listElement {
+  width: 200px;
+  height: 250px;
+  border: 1px solid;
+  border-radius: 10px;
+}
+.img {
+  margin-left: 50px;
+}
+.name,
+.descriptions {
+  text-align: center;
+}

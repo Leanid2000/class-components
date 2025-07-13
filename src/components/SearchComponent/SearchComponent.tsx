@@ -1,4 +1,5 @@
 import { Component, type ChangeEvent } from 'react';
+import './searchComponent.css';
 
 interface SearchProps {
   inputValue: string;
@@ -21,14 +22,17 @@ export default class SearchComponent extends Component<SearchProps> {
   };
   render() {
     return (
-      <>
+      <div className="searchBlock">
         <input
           type="text"
+          className="searchInput"
           value={this.state.value}
           onChange={this.handleChange}
         />
-        <button onClick={this.handleClick}>click</button>
-      </>
+        <button className="button" onClick={this.handleClick}>
+          Search
+        </button>
+      </div>
     );
   }
 }
