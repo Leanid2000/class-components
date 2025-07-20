@@ -4,7 +4,7 @@ import './searchComponent.css';
 interface SearchProps {
   inputValue: string;
   setInputValue: (value: string) => void;
-  getResults: () => void;
+  getResults: (value: string) => void;
 }
 
 export default class SearchComponent extends Component<SearchProps> {
@@ -18,7 +18,11 @@ export default class SearchComponent extends Component<SearchProps> {
   };
 
   handleClick = () => {
-    this.props.getResults();
+    const value = this.state.value.trim();
+    console.log(value);
+    this.props.setInputValue(value);
+    this.setState({ value: value });
+    this.props.getResults(value);
   };
   render() {
     return (

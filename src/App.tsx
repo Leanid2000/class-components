@@ -2,12 +2,15 @@ import { Component } from 'react';
 import SearchComponent from './components/SearchComponent/SearchComponent';
 import DisplayComponent from './components/DisplayComponent/DisplayComponent';
 import type { Pokemon } from './utils/interfaces/pokemonInterfaces';
+import ErrorComponent from './components/ErrorBoundary/ErrorComponent/ErrorComponent';
+import './App.css';
 
 interface State {
   inputValue: string;
   pokemons: Pokemon[];
   loading: boolean;
   isFound: boolean;
+  isClickError: boolean;
 }
 
 interface PokemonSpecies {
@@ -32,6 +35,7 @@ class App extends Component<Record<string, never>, State> {
     pokemons: [],
     loading: false,
     isFound: true,
+    isClickError: false,
   };
 
   componentDidMount() {
@@ -44,7 +48,7 @@ class App extends Component<Record<string, never>, State> {
       `https://pokeapi.co/api/v2/pokemon-species/${value}`
     );
     const information = await fetch(
-      `https://pokeapi.co/api/v2/pokemon/${value}`
+      `https://pokeapi.co/api/v2/pokemon/${value}/`
     );
     if (!getSpecies.ok || !information.ok) {
       throw new Error(`Error: ${getSpecies.status} ${getSpecies.statusText}`);
@@ -106,7 +110,13 @@ class App extends Component<Record<string, never>, State> {
         }
       }
     } catch {
-      this.setState({ loading: false, isFound: false, pokemons: [] });
+      console.log('sdfsdf');
+      this.setState({
+        loading: false,
+        isFound: false,
+        pokemons: [],
+        isClickError: true,
+      });
     }
   };
 
@@ -122,7 +132,14 @@ class App extends Component<Record<string, never>, State> {
     this.setState({ inputValue: value });
   };
 
+  triggerError = () => {
+    this.setState({ isClickError: true });
+  };
+
   render() {
+    if (this.state.isClickError) {
+      return <ErrorComponent />;
+    }
     return (
       <>
         <SearchComponent
@@ -136,6 +153,9 @@ class App extends Component<Record<string, never>, State> {
           isFound={this.state.isFound}
           loading={this.state.loading}
         />
+        <button className="errorButton" onClick={this.triggerError}>
+          Error
+        </button>
       </>
     );
   }

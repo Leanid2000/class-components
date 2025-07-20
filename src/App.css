@@ -1,0 +1,12 @@
+.errorButton {
+  border: none;
+  display: flex;
+  background-color: rgb(46, 204, 40);
+  border-radius: 20px;
+  width: 150px;
+  height: 30px;
+  cursor: pointer;
+  margin: auto;
+  align-items: center;
+  justify-content: center;
+}
