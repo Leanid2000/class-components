@@ -19,7 +19,6 @@ export default class SearchComponent extends Component<SearchProps> {
 
   handleClick = () => {
     const value = this.state.value.trim();
-    console.log(value);
     this.props.setInputValue(value);
     this.setState({ value: value });
     this.props.getResults(value);
