@@ -21,18 +21,18 @@ describe('SearchComponent', () => {
     vi.clearAllMocks();
   });
 
-  it('отображает поле поиска и кнопку поиска', () => {
+  it('Displays the search field and the search button', () => {
     Component();
     expect(screen.getByRole('button')).toBeInTheDocument();
   });
 
-  it('отображает ранее сохранённый поисковый запрос из localStorage при монтировании', () => {
+  it('Displays a previously saved search query from localStorage when mounted', () => {
     localStorage.setItem('inputValue', 'saved term');
     Component();
     expect(screen.getByRole('textbox')).toHaveValue('saved term');
   });
 
-  it('отображает пустой ввод, если сохранённый термин отсутствует', () => {
+  it('Displays an empty input if the saved term is missing.', () => {
     Component();
     expect(screen.getByRole('textbox')).toHaveValue('');
   });

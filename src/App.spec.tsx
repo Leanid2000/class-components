@@ -171,7 +171,7 @@ describe('App', () => {
     );
   });
 
-  it('xxx', async () => {
+  it('Error detection in API requests using ErrorBoundary', async () => {
     (fetch as Mock).mockResolvedValueOnce({
       ok: false,
       status: 400,
@@ -182,9 +182,6 @@ describe('App', () => {
         <App />
       </ErrorBoundary>
     );
-
-    // await userEvent.type(screen.getByRole('textbox'), 'no');
-    // await userEvent.click(screen.getByRole('button', { name: /search/i }));
     await waitFor(() =>
       expect(screen.getByText(/something went wrong/i)).toBeInTheDocument()
     );
