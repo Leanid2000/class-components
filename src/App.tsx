@@ -110,7 +110,6 @@ class App extends Component<Record<string, never>, State> {
         }
       }
     } catch {
-      console.log('sdfsdf');
       this.setState({
         loading: false,
         isFound: false,

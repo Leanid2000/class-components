@@ -10,6 +10,7 @@ import {
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import App from './App';
+import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary';
 
 globalThis.fetch = vi.fn();
 
@@ -145,6 +146,47 @@ describe('App', () => {
     );
     await waitFor(() =>
       expect(screen.getByText(/pokemon2/i)).toBeInTheDocument()
+    );
+  });
+
+  it('When you click on the "Error" button, an error occurs and the backup interface is displayed. And when you click on "Try again", the backup interface disappears.', async () => {
+    vi.spyOn(console, 'error').mockImplementation(() => {});
+    render(
+      <ErrorBoundary>
+        <App />
+      </ErrorBoundary>
+    );
+    await userEvent.click(screen.getByRole('button', { name: /error/i }));
+    await waitFor(() =>
+      expect(screen.getByText(/something went wrong/i)).toBeInTheDocument()
+    );
+    await waitFor(() =>
+      expect(screen.getByText(/this is a test error/i)).toBeInTheDocument()
+    );
+    await userEvent.click(screen.getByRole('button', { name: /try again/i }));
+    await waitFor(() =>
+      expect(
+        screen.getByRole('button', { name: /search/i })
+      ).toBeInTheDocument()
+    );
+  });
+
+  it('xxx', async () => {
+    (fetch as Mock).mockResolvedValueOnce({
+      ok: false,
+      status: 400,
+    });
+
+    render(
+      <ErrorBoundary>
+        <App />
+      </ErrorBoundary>
+    );
+
+    // await userEvent.type(screen.getByRole('textbox'), 'no');
+    // await userEvent.click(screen.getByRole('button', { name: /search/i }));
+    await waitFor(() =>
+      expect(screen.getByText(/something went wrong/i)).toBeInTheDocument()
     );
   });
 });
