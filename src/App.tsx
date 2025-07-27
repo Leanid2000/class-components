@@ -1,9 +1,11 @@
-import { Component } from 'react';
+import { useLayoutEffect, useRef, useState } from 'react';
 import SearchComponent from './components/SearchComponent/SearchComponent';
 import DisplayComponent from './components/DisplayComponent/DisplayComponent';
 import type { Pokemon } from './utils/interfaces/pokemonInterfaces';
 import ErrorComponent from './components/ErrorBoundary/ErrorComponent/ErrorComponent';
 import './App.css';
+import { useLocalStorage } from './hooks/useLocalStorage';
+import { Outlet, useNavigate, useParams } from 'react-router-dom';
 
 interface State {
   inputValue: string;
@@ -11,6 +13,8 @@ interface State {
   loading: boolean;
   isFound: boolean;
   isClickError: boolean;
+  isAllPokemons: boolean;
+  //   firstLayout:boolean
 }
 
 interface PokemonSpecies {
@@ -23,27 +27,33 @@ interface PokemonSpeciesText {
 
 interface PokemonInf {
   sprites: { front_default: string };
+  id: number;
+  name: string;
 }
 
 interface PokemonsResult {
   results: Pokemon[];
   name: string;
+  id: number;
 }
-class App extends Component<Record<string, never>, State> {
-  state = {
-    inputValue: '',
-    pokemons: [],
-    loading: false,
-    isFound: true,
-    isClickError: false,
-  };
+const initialState = {
+  inputValue: '',
+  pokemons: [],
+  loading: false,
+  isFound: true,
+  isClickError: false,
+  isAllPokemons: true,
+  // firstLayout: true
+};
 
-  componentDidMount() {
-    const inputValueInStorage = localStorage.getItem('inputValue');
-    this.getResults(inputValueInStorage || '');
-  }
+const App = () => {
+  const [state, setState] = useState<State>(initialState);
+  const [valueInStorage, setValueInStorage] = useLocalStorage();
+  const { page } = useParams<{ page: string }>();
+  const navigate = useNavigate();
+  const isFirstLayout = useRef(true);
 
-  getSpecies = async (value: string) => {
+  const getSpecies = async (value: string) => {
     const getSpecies = await fetch(
       `https://pokeapi.co/api/v2/pokemon-species/${value}`
     );
@@ -61,40 +71,63 @@ class App extends Component<Record<string, never>, State> {
     const img: string = fullInformation.sprites.front_default;
 
     if (speciesEn) {
-      return { speciesEn: speciesEn, img: img };
+      return {
+        name: fullInformation.name,
+        speciesEn: speciesEn,
+        img: img,
+        id: fullInformation.id,
+      };
     }
   };
-
-  getResults = async (localValue?: string) => {
-    this.setState({ loading: true, pokemons: [], isFound: true });
+  const processingResult = (
+    result: Pokemon[],
+    isAllPokemons: boolean,
+    localValue?: string
+  ) => {
+    setState({
+      ...state,
+      loading: false,
+      pokemons: result,
+      isFound: true,
+      isAllPokemons: isAllPokemons,
+    });
+    setValueInStorage(localValue || state.inputValue);
+  };
+  const getResults = async (offset: number, localValue?: string) => {
+    setState({ ...state, loading: true, pokemons: [], isFound: true });
+    console.log(localValue);
     try {
       const getPokemons = await fetch(
-        `https://pokeapi.co/api/v2/pokemon/${localValue || this.state.inputValue}`
+        `https://pokeapi.co/api/v2/pokemon/${localValue || state.inputValue}?limit=20&offset=${offset * 20}`
       );
       if (getPokemons.status === 404) {
-        this.setState({ isFound: false, loading: false });
-        localStorage.setItem(
-          'inputValue',
-          !localValue ? this.state.inputValue : localValue
-        );
+        setState({
+          ...state,
+          pokemons: [],
+          isFound: false,
+          loading: false,
+          isAllPokemons: false,
+        });
+        setValueInStorage(localValue || state.inputValue);
         return;
       }
       const pokemonsResult: PokemonsResult = await getPokemons.json();
       if (pokemonsResult.results) {
         const descriptions: Pokemon[] = await Promise.all(
           pokemonsResult.results.map(async (pokemon: Pokemon) => {
-            const result = await this.getSpecies(pokemon.name);
+            const result = await getSpecies(pokemon.name);
             return {
               name: pokemon.name,
               descriptions:
                 result?.speciesEn?.flavor_text.replace(/\n|\f/g, ' ') || '',
               img: result?.img || '',
+              id: result?.id || 1,
             };
           })
         );
-        this.processingResult(descriptions);
+        processingResult(descriptions, true);
       } else {
-        const species = await this.getSpecies(pokemonsResult.name);
+        const species = await getSpecies(pokemonsResult.name);
         if (species) {
           const descriptions: Pokemon[] = await Promise.all([
             {
@@ -104,13 +137,15 @@ class App extends Component<Record<string, never>, State> {
                 ' '
               ),
               img: species?.img || '',
+              id: species.id,
             },
           ]);
-          this.processingResult(descriptions, localValue);
+          processingResult(descriptions, false, localValue);
         }
       }
     } catch {
-      this.setState({
+      setState({
+        ...state,
         loading: false,
         isFound: false,
         pokemons: [],
@@ -119,45 +154,61 @@ class App extends Component<Record<string, never>, State> {
     }
   };
 
-  processingResult = async (result: Pokemon[], localValue?: string) => {
-    this.setState({ loading: false, pokemons: result, isFound: true });
-    localStorage.setItem(
-      'inputValue',
-      !localValue ? this.state.inputValue : localValue
-    );
+  const setInputValue = (value: string) => {
+    setState({ ...state, inputValue: value });
   };
+  useLayoutEffect(() => {
+    if (isFirstLayout.current) {
+      if (!page) {
+        navigate(`/1/`);
+        getResults(0, valueInStorage);
+        console.log('1');
+      }
 
-  setInputValue = (value: string) => {
-    this.setState({ inputValue: value });
-  };
-
-  triggerError = () => {
-    this.setState({ isClickError: true });
-  };
-
-  render() {
-    if (this.state.isClickError) {
-      return <ErrorComponent />;
+      isFirstLayout.current = false;
+      //  console.log(state.firstLayout)
     }
-    return (
-      <>
-        <SearchComponent
-          setInputValue={this.setInputValue}
-          getResults={this.getResults}
-          inputValue={this.state.inputValue}
-        />
+    if (page) {
+      console.log('2');
 
-        <DisplayComponent
-          pokemons={this.state.pokemons}
-          isFound={this.state.isFound}
-          loading={this.state.loading}
+      getResults(Number(page) - 1, valueInStorage);
+    }
+  }, [page]);
+  if (state.isClickError) {
+    return <ErrorComponent />;
+  }
+
+  return (
+    <div className="basicBlock">
+      <div className="searchBlockComponent">
+        <SearchComponent
+          setInputValue={setInputValue}
+          getResults={getResults}
         />
-        <button className="errorButton" onClick={this.triggerError}>
+        <button
+          className="buttonAboutUs"
+          onClick={() => navigate(`/${page}/about`)}
+        >
+          About us
+        </button>
+        <DisplayComponent
+          pokemons={state.pokemons}
+          isFound={state.isFound}
+          loading={state.loading}
+          isAllPokemons={state.isAllPokemons}
+        />
+        <button
+          className="errorButton"
+          onClick={() => setState({ ...state, isClickError: true })}
+        >
           Error
         </button>
-      </>
-    );
-  }
-}
+      </div>
+      <div>
+        <Outlet context={{ getSpecies }} />
+      </div>
+    </div>
+  );
+};
 
 export default App;
