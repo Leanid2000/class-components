@@ -1,0 +1,7 @@
+.errorBlock {
+  display: flex;
+  font-size: 200px;
+  margin: auto;
+  align-items: center;
+  justify-content: center;
+}

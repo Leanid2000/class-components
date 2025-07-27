@@ -42,6 +42,7 @@ describe('SearchComponent', () => {
   it('Saves search term to localStorage when search button is clicked', async () => {
     const getResults = vi.fn((page: number, value: string) => {
       localStorage.setItem('inputValue', value);
+      return page;
     });
     render(
       <SearchComponent setInputValue={setInputValue} getResults={getResults} />
@@ -54,6 +55,7 @@ describe('SearchComponent', () => {
   it('Trims whitespace from search input before saving', async () => {
     const getResults = vi.fn((page: number, value: string) => {
       localStorage.setItem('inputValue', value);
+      return page;
     });
     render(
       <SearchComponent setInputValue={setInputValue} getResults={getResults} />

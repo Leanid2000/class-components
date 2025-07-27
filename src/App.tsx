@@ -161,13 +161,18 @@ const App = () => {
     if (isFirstLayout.current) {
       if (!page) {
         navigate(`/1/`);
+        getResults(0, valueInStorage);
+        console.log('1');
       }
 
       isFirstLayout.current = false;
       //  console.log(state.firstLayout)
     }
+    if (page) {
+      console.log('2');
 
-    getResults(Number(page) - 1, valueInStorage);
+      getResults(Number(page) - 1, valueInStorage);
+    }
   }, [page]);
   if (state.isClickError) {
     return <ErrorComponent />;

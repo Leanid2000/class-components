@@ -24,6 +24,10 @@ const DisplayComponent = ({
   };
   useEffect(() => {
     setActivePage(Number(page));
+    if (!Number(page)) {
+      setActivePage(1);
+    }
+    // console.log(activePage)
   }, [page]);
   return (
     <>

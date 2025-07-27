@@ -3,15 +3,14 @@ import App from '../App';
 import ErrorBoundary from '../components/ErrorBoundary/ErrorBoundary';
 import { DetailsComponent } from '../components/DetailsComponent/DetailsComponent';
 import { AboutUsComponent } from '../components/AboutUsCompmnent/AboutUsCompmnent';
+import { ErrorPage } from '../components/ErrorPage/ErrorPage';
 
 export const AppRouter = createBrowserRouter([
   {
     path: '/',
-    element: (
-      <ErrorBoundary>
-        <App />
-      </ErrorBoundary>
-    ),
+    element: <App />,
+
+    errorElement: <ErrorPage />,
     children: [{ index: true, element: <></> }],
   },
   {
@@ -21,6 +20,7 @@ export const AppRouter = createBrowserRouter([
         <App />
       </ErrorBoundary>
     ),
+    errorElement: <ErrorPage />,
     children: [
       { index: true, element: <></> },
       { path: ':pokemonId', element: <DetailsComponent /> },
