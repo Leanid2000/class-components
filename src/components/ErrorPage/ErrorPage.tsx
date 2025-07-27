@@ -10,7 +10,6 @@ export const ErrorPage = () => {
     <>
       <p className="errorBlock">404</p>
       <button onClick={handleClick} className="errorButton">
-        {' '}
         To the main page
       </button>
     </>

@@ -19,6 +19,7 @@ export default defineConfig({
         'src/setupTests.{js,ts}',
         'src/**/*.d.ts',
         'src/utils/interfaces/pokemonInterfaces.ts',
+        'src/routers/AppRouter.tsx',
       ],
       thresholds: {
         lines: 50,

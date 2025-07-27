@@ -32,7 +32,17 @@ const mockPokemonInfoResponse = {
     front_default: 'pokemon1.png',
   },
 };
+vi.mock('react-router-dom', async (importOriginal) => {
+  const actual = (await importOriginal()) as object;
 
+  return {
+    ...actual,
+    useNavigate: () => mockedNavigate,
+    useParams: () => ({ page: '1' }),
+  };
+});
+
+const mockedNavigate = vi.fn();
 describe('App', () => {
   beforeEach(() => {
     localStorage.clear();

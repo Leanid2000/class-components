@@ -21,7 +21,6 @@ export const DetailsComponent = () => {
 
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  // const  getSpecies  = useOutletContext<(value: string)=> Promise<Species>>();
   const { getSpecies } = useOutletContext<{
     getSpecies: (value: string) => Promise<Species>;
   }>();
@@ -39,14 +38,9 @@ export const DetailsComponent = () => {
     getPokemonInf();
   }, [pokemonId]);
 
-  //  if(loading){
-  //     return <div> Loading...</div>
-  // }
   return (
     <>
-      <div className="background" onClick={handleClick}>
-        {' '}
-      </div>
+      <div className="background" onClick={handleClick}></div>
       <div className="detailsComponentBlock">
         {!loading ? (
           <>
@@ -63,7 +57,7 @@ export const DetailsComponent = () => {
                 'There is no description'}
             </p>
             <button onClick={handleClick} className="closeButton">
-              Сlose
+              Close
             </button>
           </>
         ) : (
