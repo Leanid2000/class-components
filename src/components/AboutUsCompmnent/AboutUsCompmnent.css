@@ -1,0 +1,20 @@
+.aboutUsCompmnent {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  background-color: #ffff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.aboutUsText {
+  width: 400px;
+  text-align: center;
+}
+
+.link {
+  text-decoration: none;
+  margin-bottom: 20px;
+}
