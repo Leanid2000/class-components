@@ -7,16 +7,19 @@ const mockPokemons = [
     name: 'pokemon1',
     descriptions: 'Descriptions pokemon1',
     img: 'pokemon1.png',
+    id: 1,
   },
   {
     name: 'pokemon2',
     descriptions: 'Descriptions pokemon2',
     img: 'pokemon2.png',
+    id: 2,
   },
   {
     name: 'pokemon3',
     descriptions: 'Descriptions pokemon3',
     img: 'pokemon3.png',
+    id: 3,
   },
 ];
 describe('DisplayComponent', () => {
@@ -26,6 +29,7 @@ describe('DisplayComponent', () => {
         pokemons={mockPokemons}
         isFound={true}
         loading={false}
+        isAllPokemons={true}
       />
     );
     const images = screen.getAllByRole('img');
@@ -39,12 +43,26 @@ describe('DisplayComponent', () => {
   });
 
   it('Displays "no results" message when data array is empty', () => {
-    render(<DisplayComponent pokemons={[]} isFound={false} loading={false} />);
+    render(
+      <DisplayComponent
+        pokemons={[]}
+        isFound={false}
+        loading={false}
+        isAllPokemons={true}
+      />
+    );
     expect(screen.getByText(/Pokemon not found/)).toBeInTheDocument();
   });
 
   it('Shows loading state while fetching data', () => {
-    render(<DisplayComponent pokemons={[]} isFound={false} loading={true} />);
+    render(
+      <DisplayComponent
+        pokemons={[]}
+        isFound={false}
+        loading={true}
+        isAllPokemons={true}
+      />
+    );
     expect(screen.getByText(/loading.../)).toBeInTheDocument();
   });
 
@@ -54,6 +72,7 @@ describe('DisplayComponent', () => {
         name: 'No pokemon',
         descriptions: '',
         img: '',
+        id: 1,
       },
     ];
     render(
@@ -61,6 +80,7 @@ describe('DisplayComponent', () => {
         pokemons={mockPokemons}
         isFound={true}
         loading={false}
+        isAllPokemons={true}
       />
     );
     expect(screen.getByText(/No pokemon/i)).toBeInTheDocument();

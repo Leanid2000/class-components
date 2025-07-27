@@ -13,6 +13,7 @@
   height: 250px;
   border: 1px solid;
   border-radius: 10px;
+  cursor: pointer;
 }
 .img {
   margin-left: 50px;
@@ -20,4 +21,22 @@
 .name,
 .descriptions {
   text-align: center;
+}
+
+.paginationBlock {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  justify-content: center;
+}
+
+.paginationElement {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 1px solid rgb(47, 194, 10);
+  cursor: pointer;
 }

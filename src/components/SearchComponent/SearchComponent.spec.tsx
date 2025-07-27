@@ -8,11 +8,7 @@ const setInputValue = vi.fn();
 
 const Component = () =>
   render(
-    <SearchComponent
-      inputValue=""
-      setInputValue={setInputValue}
-      getResults={getResults}
-    />
+    <SearchComponent setInputValue={setInputValue} getResults={getResults} />
   );
 
 describe('SearchComponent', () => {
@@ -44,15 +40,11 @@ describe('SearchComponent', () => {
   });
 
   it('Saves search term to localStorage when search button is clicked', async () => {
-    const getResults = vi.fn((value: string) => {
+    const getResults = vi.fn((page: number, value: string) => {
       localStorage.setItem('inputValue', value);
     });
     render(
-      <SearchComponent
-        inputValue=""
-        setInputValue={setInputValue}
-        getResults={getResults}
-      />
+      <SearchComponent setInputValue={setInputValue} getResults={getResults} />
     );
     await userEvent.type(screen.getByRole('textbox'), 'new text');
     await userEvent.click(screen.getByRole('button'));
@@ -60,15 +52,11 @@ describe('SearchComponent', () => {
   });
 
   it('Trims whitespace from search input before saving', async () => {
-    const getResults = vi.fn((value: string) => {
+    const getResults = vi.fn((page: number, value: string) => {
       localStorage.setItem('inputValue', value);
     });
     render(
-      <SearchComponent
-        inputValue=""
-        setInputValue={setInputValue}
-        getResults={getResults}
-      />
+      <SearchComponent setInputValue={setInputValue} getResults={getResults} />
     );
     await userEvent.type(screen.getByRole('textbox'), '    new text    ');
     await userEvent.click(screen.getByRole('button'));
