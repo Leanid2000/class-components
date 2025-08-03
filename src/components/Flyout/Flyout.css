@@ -1,0 +1,42 @@
+.flyoutBlock {
+  width: 450px;
+  height: 50px;
+  display: flex;
+  position: fixed;
+  left: 10px;
+  bottom: 10px;
+  animation-name: move;
+  animation-duration: 0.2s;
+  animation-timing-function: linear;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background-color: rgb(17, 216, 140);
+  border-radius: 5px;
+}
+
+.flyoutButton {
+  width: 90px;
+  height: 40px;
+  background-color: aqua;
+  border: 0;
+  border-radius: 20px;
+}
+
+.flyoutText {
+  font-size: 20px;
+}
+
+.link {
+  display: none;
+}
+@keyframes move {
+  from {
+    opacity: 0.1;
+    left: -460px;
+  }
+  to {
+    opacity: 1;
+    left: 0px;
+  }
+}
