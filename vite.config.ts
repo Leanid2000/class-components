@@ -21,6 +21,7 @@ export default defineConfig({
         'src/**/*.d.ts',
         'src/utils/interfaces/pokemonInterfaces.ts',
         'src/routers/AppRouter.tsx',
+        'src/redux/store.ts',
       ],
       thresholds: {
         lines: 50,

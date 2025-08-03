@@ -7,16 +7,10 @@ import {
   type Mock,
   afterAll,
 } from 'vitest';
-import { render, screen, waitFor } from '@testing-library/react';
+import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import App from './App';
-import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary';
-import { configureStore } from '@reduxjs/toolkit';
-import type { Pokemon } from './utils/interfaces/pokemonInterfaces';
-import selectedItemsReducer from './redux/selectedItemsSlice';
-import basicConditionReducer from './redux/basicConditionSlice';
-import { Provider } from 'react-redux';
-import { MemoryRouter } from 'react-router-dom';
+import { renderWithStore } from './test/test-utils/renderWithMockStore';
 
 globalThis.fetch = vi.fn();
 
@@ -50,58 +44,58 @@ vi.mock('react-router-dom', async (importOriginal) => {
 
 const mockedNavigate = vi.fn();
 
-interface PreloadedState {
-  selectedItems?: {
-    items?: number[];
-    itemsInfo?: Pokemon[];
-  };
-  basicCondition?: {
-    basicCondition: {
-      loading?: boolean;
-      isFound?: boolean;
-      pokemons?: Pokemon[];
-      isAllPokemons?: boolean;
-      inputValue?: string;
-      isClickError?: boolean;
-    };
-  };
-}
+// interface PreloadedState {
+//   selectedItems?: {
+//     items?: number[];
+//     itemsInfo?: Pokemon[];
+//   };
+//   basicCondition?: {
+//     basicCondition: {
+//       loading?: boolean;
+//       isFound?: boolean;
+//       pokemons?: Pokemon[];
+//       isAllPokemons?: boolean;
+//       inputValue?: string;
+//       isClickError?: boolean;
+//     };
+//   };
+// }
 
-const renderWithStore = (preloadedState: PreloadedState = {}) => {
-  const mockedStore = configureStore({
-    reducer: {
-      selectedItems: selectedItemsReducer,
-      basicCondition: basicConditionReducer,
-    },
-    preloadedState: {
-      selectedItems: {
-        items: [],
-        itemsInfo: [],
-        ...preloadedState.selectedItems,
-      },
-      basicCondition: {
-        basicCondition: {
-          loading: false,
-          isFound: true,
-          pokemons: [],
-          isAllPokemons: true,
-          inputValue: '',
-          isClickError: false,
-          ...preloadedState.basicCondition?.basicCondition,
-        },
-      },
-    },
-  });
-  return render(
-    <Provider store={mockedStore}>
-      <MemoryRouter>
-        <ErrorBoundary>
-          <App />
-        </ErrorBoundary>
-      </MemoryRouter>
-    </Provider>
-  );
-};
+// const renderWithStore = (preloadedState: PreloadedState = {}) => {
+//   const mockedStore = configureStore({
+//     reducer: {
+//       selectedItems: selectedItemsReducer,
+//       basicCondition: basicConditionReducer,
+//     },
+//     preloadedState: {
+//       selectedItems: {
+//         items: [],
+//         itemsInfo: [],
+//         ...preloadedState.selectedItems,
+//       },
+//       basicCondition: {
+//         basicCondition: {
+//           loading: false,
+//           isFound: true,
+//           pokemons: [],
+//           isAllPokemons: true,
+//           inputValue: '',
+//           isClickError: false,
+//           ...preloadedState.basicCondition?.basicCondition,
+//         },
+//       },
+//     },
+//   });
+//   return render(
+//     <Provider store={mockedStore}>
+//       <MemoryRouter>
+//         <ErrorBoundary>
+//           <App />
+//         </ErrorBoundary>
+//       </MemoryRouter>
+//     </Provider>
+//   );
+// };
 describe('App', () => {
   beforeEach(() => {
     localStorage.clear();
@@ -134,7 +128,7 @@ describe('App', () => {
       }
       return Promise.resolve({ ok: false, status: 404 });
     });
-    renderWithStore();
+    renderWithStore({}, <App />);
     expect(screen.getByText(/loading/i)).toBeInTheDocument();
     await waitFor(() =>
       expect(screen.getByText(/pokemon1/i)).toBeInTheDocument()
@@ -147,7 +141,7 @@ describe('App', () => {
       status: 404,
     });
 
-    renderWithStore();
+    renderWithStore({}, <App />);
 
     await userEvent.type(screen.getByRole('textbox'), 'no');
     await userEvent.click(screen.getByRole('button', { name: /search/i }));
@@ -171,7 +165,7 @@ describe('App', () => {
         json: () => Promise.resolve(mockPokemonInfoResponse),
       });
 
-    renderWithStore();
+    renderWithStore({}, <App />);
 
     await userEvent.type(screen.getByRole('textbox'), 'pokemon1');
     await userEvent.click(screen.getByRole('button', { name: /search/i }));
@@ -208,7 +202,7 @@ describe('App', () => {
       return Promise.resolve({ ok: false, status: 404 });
     });
 
-    renderWithStore();
+    renderWithStore({}, <App />);
 
     await waitFor(() =>
       expect(screen.getByText(/pokemon1/i)).toBeInTheDocument()
@@ -221,7 +215,7 @@ describe('App', () => {
   it('When you click on the "Error" button, an error occurs and the backup interface is displayed. And when you click on "Try again", the backup interface disappears.', async () => {
     vi.spyOn(console, 'error').mockImplementation(() => {});
 
-    renderWithStore();
+    renderWithStore({}, <App />);
 
     await userEvent.click(screen.getByRole('button', { name: /error/i }));
     await waitFor(() =>
@@ -244,7 +238,7 @@ describe('App', () => {
       status: 402,
     });
 
-    renderWithStore();
+    renderWithStore({}, <App />);
     await waitFor(() =>
       expect(screen.getByText(/something went wrong/i)).toBeInTheDocument()
     );

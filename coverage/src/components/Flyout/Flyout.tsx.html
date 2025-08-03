@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">13.15% </span>
+                <span class="strong">71.05% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>5/38</span>
+                <span class='fraction'>27/38</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/0</span>
+                <span class='fraction'>4/4</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">66.66% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/1</span>
+                <span class='fraction'>2/3</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">13.15% </span>
+                <span class="strong">71.05% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>5/38</span>
+                <span class='fraction'>27/38</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line medium'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -115,16 +115,17 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -136,41 +137,40 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { useDispatch, useSelector } from 'react-redux';
 import type { AppDispatch, RootState } from '../../redux/store';
 import { deleteAllSelectedItem } from '../../redux/selectedItemsSlice';
 import './Flyout.css';
 import { useRef } from 'react';
 &nbsp;
-export const Flyout = <span class="fstat-no" title="function not covered" >() =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >  const link = useRef&lt;HTMLAnchorElement&gt;(null);</span>
-<span class="cstat-no" title="statement not covered" >  const dispatch = useDispatch&lt;AppDispatch&gt;();</span>
-<span class="cstat-no" title="statement not covered" >  const selectedItems = useSelector(</span>
-<span class="cstat-no" title="statement not covered" >    (state: RootState) =&gt; state.selectedItems.items</span>
-<span class="cstat-no" title="statement not covered" >  );</span>
+export const Flyout = () =&gt; {
+  const link = useRef&lt;HTMLAnchorElement&gt;(null);
+  const dispatch = useDispatch&lt;AppDispatch&gt;();
+  const selectedItems = useSelector(
+    (state: RootState) =&gt; state.selectedItems.items
+  );
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  const selectedItemsInformation = useSelector(</span>
-<span class="cstat-no" title="statement not covered" >    (state: RootState) =&gt; state.selectedItems.itemsInfo</span>
-<span class="cstat-no" title="statement not covered" >  );</span>
+  const selectedItemsInformation = useSelector(
+    (state: RootState) =&gt; state.selectedItems.itemsInfo
+  );
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  const download = () =&gt; {</span>
+  const download = <span class="fstat-no" title="function not covered" >() =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    const blob = new Blob([JSON.stringify(selectedItemsInformation)], {</span>
 <span class="cstat-no" title="statement not covered" >      type: 'text/csv;charset=utf-8;',</span>
 <span class="cstat-no" title="statement not covered" >    });</span>
@@ -182,22 +182,22 @@ export const Flyout = <span class="fstat-no" title="function not covered" >() =&
 <span class="cstat-no" title="statement not covered" >      URL.revokeObjectURL(url);</span>
 <span class="cstat-no" title="statement not covered" >    }</span>
 <span class="cstat-no" title="statement not covered" >  };</span>
-<span class="cstat-no" title="statement not covered" >  const unselectAll = () =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    dispatch(deleteAllSelectedItem());</span>
-<span class="cstat-no" title="statement not covered" >  };</span>
-<span class="cstat-no" title="statement not covered" >  return (</span>
-<span class="cstat-no" title="statement not covered" >    &lt;div className="flyoutBlock"&gt;</span>
-<span class="cstat-no" title="statement not covered" >      &lt;a ref={link} className="link"&gt;&lt;/a&gt;</span>
-<span class="cstat-no" title="statement not covered" >      &lt;p className="flyoutText"&gt;{`You have selected ${selectedItems.length} Pokemon`}&lt;/p&gt;</span>
-<span class="cstat-no" title="statement not covered" >      &lt;button onClick={unselectAll} className="flyoutButton"&gt;</span>
+  const unselectAll = () =&gt; {
+    dispatch(deleteAllSelectedItem());
+  };
+  return (
+    &lt;div className="flyoutBlock"&gt;
+      &lt;a ref={link} className="link"&gt;&lt;/a&gt;
+      &lt;p className="flyoutText"&gt;{`You have selected ${selectedItems.length} Pokemon`}&lt;/p&gt;
+      &lt;button onClick={unselectAll} className="flyoutButton"&gt;
         Unselect all
-<span class="cstat-no" title="statement not covered" >      &lt;/button&gt;</span>
-<span class="cstat-no" title="statement not covered" >      &lt;button className="flyoutButton" onClick={download}&gt;</span>
+      &lt;/button&gt;
+      &lt;button className="flyoutButton" onClick={download}&gt;
         Download
-<span class="cstat-no" title="statement not covered" >      &lt;/button&gt;</span>
-<span class="cstat-no" title="statement not covered" >    &lt;/div&gt;</span>
+      &lt;/button&gt;
+    &lt;/div&gt;
   );
-<span class="cstat-no" title="statement not covered" >};</span>
+};
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -205,7 +205,7 @@ export const Flyout = <span class="fstat-no" title="function not covered" >() =&
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-08-03T18:42:42.256Z
+                at 2025-08-03T19:59:48.798Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>
