@@ -25,14 +25,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>54/54</span>
+                <span class='fraction'>56/56</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">87.5% </span>
+                <span class="strong">77.77% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>7/8</span>
+                <span class='fraction'>7/9</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>54/54</span>
+                <span class='fraction'>56/56</span>
             </div>
         
             
@@ -133,9 +133,11 @@
 <a name='L68'></a><a href='#L68'>68</a>
 <a name='L69'></a><a href='#L69'>69</a>
 <a name='L70'></a><a href='#L70'>70</a>
-<a name='L71'></a><a href='#L71'>71</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L71'></a><a href='#L71'>71</a>
+<a name='L72'></a><a href='#L72'>72</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -153,27 +155,27 @@
 <span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">6x</span>
-<span class="cline-any cline-yes">6x</span>
-<span class="cline-any cline-yes">6x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">6x</span>
-<span class="cline-any cline-yes">6x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-yes">6x</span>
@@ -205,7 +207,8 @@
 <span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { useNavigate, useOutletContext, useParams } from 'react-router-dom';
 import './DetailsComponent.css';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
+import { ThemeContext } from '../ThemeContext/ThemeContext';
 &nbsp;
 interface Species {
   speciesEn: { flavor_text: string };
@@ -223,31 +226,31 @@ export const DetailsComponent = () =&gt; {
   });
   const { pokemonId } = useParams&lt;{ pokemonId: string }&gt;();
   const { page } = useParams&lt;{ page: string }&gt;();
-&nbsp;
+  const theme = useContext(ThemeContext);
+  const trueTheme = <span class="branch-0 cbranch-no" title="branch not covered" >theme?.theme || '</span>light';
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { getSpecies } = useOutletContext&lt;{
     getSpecies: (value: string) =&gt; Promise&lt;Species&gt;;
   }&gt;();
-  const getPokemonInf = async () =&gt; {
-    setLoading(true);
-    const information = await getSpecies(<span class="branch-0 cbranch-no" title="branch not covered" >pokemonId || '1')</span>;
-    setPokemonInf({ ...information });
-    setLoading(false);
-  };
 &nbsp;
   const handleClick = () =&gt; {
     navigate(`/${page}/`);
   };
   useEffect(() =&gt; {
+    const getPokemonInf = async () =&gt; {
+      setLoading(true);
+      const information = await getSpecies(<span class="branch-0 cbranch-no" title="branch not covered" >pokemonId || '1')</span>;
+      setPokemonInf({ ...information });
+      setLoading(false);
+    };
     getPokemonInf();
-  }, [pokemonId]);
+  }, [pokemonId, getSpecies]);
 &nbsp;
   return (
     &lt;&gt;
-      &lt;div className="background" onClick={handleClick}&gt;
-      &lt;/div&gt;
-      &lt;div className="detailsComponentBlock"&gt;
+      &lt;div className="background" onClick={handleClick}&gt;&lt;/div&gt;
+      &lt;div className={`${trueTheme}DetailsComponentBlock`}&gt;
         {!loading ? (
           &lt;&gt;
             &lt;img
@@ -280,7 +283,7 @@ export const DetailsComponent = () =&gt; {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-07-27T23:21:28.469Z
+                at 2025-08-03T18:42:42.256Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

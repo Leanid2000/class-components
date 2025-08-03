@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for src/components/AboutUsCompmnent/AboutUsCompmnent.tsx</title>
+    <title>Code coverage report for src/components/AboutUsCompmnent/AboutUsComponent.tsx</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../../../prettify.css" />
     <link rel="stylesheet" href="../../../base.css" />
@@ -19,20 +19,20 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../../index.html">All files</a> / <a href="index.html">src/components/AboutUsCompmnent</a> AboutUsCompmnent.tsx</h1>
+        <h1><a href="../../../index.html">All files</a> / <a href="index.html">src/components/AboutUsCompmnent</a> AboutUsComponent.tsx</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>23/23</span>
+                <span class='fraction'>25/25</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">66.66% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>2/2</span>
+                <span class='fraction'>2/3</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>23/23</span>
+                <span class='fraction'>25/25</span>
             </div>
         
             
@@ -93,13 +93,21 @@
 <a name='L28'></a><a href='#L28'>28</a>
 <a name='L29'></a><a href='#L29'>29</a>
 <a name='L30'></a><a href='#L30'>30</a>
-<a name='L31'></a><a href='#L31'>31</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L31'></a><a href='#L31'>31</a>
+<a name='L32'></a><a href='#L32'>32</a>
+<a name='L33'></a><a href='#L33'>33</a>
+<a name='L34'></a><a href='#L34'>34</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">2x</span>
@@ -110,11 +118,6 @@
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
@@ -123,28 +126,34 @@
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import './AboutUsCompmnent.css';
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { useContext } from 'react';
+import './AboutUsComponent.css';
 import { useNavigate, useParams } from 'react-router-dom';
+import { ThemeContext } from '../ThemeContext/ThemeContext';
 &nbsp;
 export const AboutUsComponent = () =&gt; {
   const navigate = useNavigate();
   const { page } = useParams&lt;{ page: string }&gt;();
+  const theme = useContext(ThemeContext);
+  const trueTheme = <span class="branch-0 cbranch-no" title="branch not covered" >theme?.theme || '</span>light';
+&nbsp;
   const handleClick = () =&gt; {
     navigate(`/${page}`);
   };
   return (
-    &lt;div className="aboutUsCompmnent"&gt;
+    &lt;div className={`${trueTheme}AboutUsComponent`}&gt;
       &lt;h2 className="aboutUsText"&gt;
         The application is designed to demonstrate the React: Routing and Hooks
         task as part of the RSSchool React 2025 Q3 course.
       &lt;/h2&gt;
       &lt;p&gt;&lt;/p&gt;
-      &lt;a href="https://github.com/Leanid2000" className="link"&gt;
-        {' '}
+      &lt;a href="https://github.com/Leanid2000" className="linkGitHub"&gt;
         My GitHub
       &lt;/a&gt;
-      &lt;a href="https://rs.school/" className="link"&gt;
-        {' '}
+      &lt;a href="https://rs.school/" className="linkRSSchool"&gt;
         RS School
       &lt;/a&gt;
       &lt;button className="errorButton" onClick={handleClick}&gt;
@@ -160,7 +169,7 @@ export const AboutUsComponent = () =&gt; {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-07-27T23:21:28.469Z
+                at 2025-08-03T18:42:42.256Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

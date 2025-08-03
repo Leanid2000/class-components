@@ -2,6 +2,11 @@ import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import DisplayComponent from './DisplayComponent';
 import { MemoryRouter } from 'react-router-dom';
+import { configureStore } from '@reduxjs/toolkit';
+import { Provider } from 'react-redux';
+import selectedItemsReducer from '../../redux/selectedItemsSlice';
+import basicConditionReducer from '../../redux/basicConditionSlice';
+import type { Pokemon } from '../../utils/interfaces/pokemonInterfaces';
 
 vi.mock('react-router-dom', async (importOriginal) => {
   const actual = (await importOriginal()) as object;
@@ -36,18 +41,59 @@ const mockPokemons = [
   },
 ];
 
+interface PreloadedState {
+  selectedItems?: {
+    items?: number[];
+    itemsInfo?: Pokemon[];
+  };
+  basicCondition?: {
+    basicCondition: {
+      loading?: boolean;
+      isFound?: boolean;
+      pokemons?: Pokemon[];
+      isAllPokemons?: boolean;
+      inputValue?: string;
+      isClickError?: boolean;
+    };
+  };
+}
+const renderWithStore = (preloadedState: PreloadedState = {}) => {
+  const mockedStore = configureStore({
+    reducer: {
+      selectedItems: selectedItemsReducer,
+      basicCondition: basicConditionReducer,
+    },
+    preloadedState: {
+      selectedItems: {
+        items: [],
+        itemsInfo: [],
+        ...preloadedState.selectedItems,
+      },
+      basicCondition: {
+        basicCondition: {
+          loading: false,
+          isFound: true,
+          pokemons: mockPokemons,
+          isAllPokemons: true,
+          inputValue: '',
+          isClickError: false,
+          ...preloadedState.basicCondition?.basicCondition,
+        },
+      },
+    },
+  });
+  return render(
+    <Provider store={mockedStore}>
+      <MemoryRouter>
+        <DisplayComponent />
+      </MemoryRouter>
+    </Provider>
+  );
+};
+
 describe('DisplayComponent', () => {
   it('Renders correct number of items when data is provided', () => {
-    render(
-      <MemoryRouter>
-        <DisplayComponent
-          pokemons={mockPokemons}
-          isFound={true}
-          loading={false}
-          isAllPokemons={true}
-        />
-      </MemoryRouter>
-    );
+    renderWithStore();
     const images = screen.getAllByRole('img');
     expect(images.length).toBe(3);
     expect(screen.getByText(/pokemon1/)).toBeInTheDocument();
@@ -59,30 +105,26 @@ describe('DisplayComponent', () => {
   });
 
   it('Displays "no results" message when data array is empty', () => {
-    render(
-      <MemoryRouter>
-        <DisplayComponent
-          pokemons={[]}
-          isFound={false}
-          loading={false}
-          isAllPokemons={true}
-        />
-      </MemoryRouter>
-    );
+    renderWithStore({
+      basicCondition: {
+        basicCondition: {
+          pokemons: [],
+          isFound: false,
+        },
+      },
+    });
     expect(screen.getByText(/Pokemon not found/)).toBeInTheDocument();
   });
 
   it('Shows loading state while fetching data', () => {
-    render(
-      <MemoryRouter>
-        <DisplayComponent
-          pokemons={[]}
-          isFound={false}
-          loading={true}
-          isAllPokemons={true}
-        />
-      </MemoryRouter>
-    );
+    renderWithStore({
+      basicCondition: {
+        basicCondition: {
+          pokemons: [],
+          loading: true,
+        },
+      },
+    });
     expect(screen.getByText(/loading.../)).toBeInTheDocument();
   });
 
@@ -95,16 +137,13 @@ describe('DisplayComponent', () => {
         id: 1,
       },
     ];
-    render(
-      <MemoryRouter>
-        <DisplayComponent
-          pokemons={mockPokemons}
-          isFound={true}
-          loading={false}
-          isAllPokemons={true}
-        />
-      </MemoryRouter>
-    );
+    renderWithStore({
+      basicCondition: {
+        basicCondition: {
+          pokemons: mockPokemons,
+        },
+      },
+    });
     expect(screen.getByText(/No pokemon/i)).toBeInTheDocument();
     expect(screen.getByAltText(/No pokemon/i)).toBeInTheDocument();
     expect(screen.getByText(/There is no description/)).toBeInTheDocument();

@@ -163,9 +163,9 @@ const App = () => {
           loading: false,
           isFound: false,
           pokemons: [],
-          isClickError: true,
         })
       );
+      setIsClickError(true);
     }
     // console.log(theme?.theme);
   };
