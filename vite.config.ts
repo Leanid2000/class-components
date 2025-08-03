@@ -3,6 +3,7 @@ import { defineConfig } from 'vitest/config';
 import react from '@vitejs/plugin-react';
 
 export default defineConfig({
+  base: '/',
   plugins: [react()],
   test: {
     globals: true,
@@ -20,6 +21,7 @@ export default defineConfig({
         'src/**/*.d.ts',
         'src/utils/interfaces/pokemonInterfaces.ts',
         'src/routers/AppRouter.tsx',
+        'src/redux/store.ts',
       ],
       thresholds: {
         lines: 50,
@@ -28,5 +30,12 @@ export default defineConfig({
         statements: 80,
       },
     },
+  },
+  server: {
+    port: 3000,
+  },
+  build: {
+    outDir: 'dist',
+    assetsDir: 'assets',
   },
 });

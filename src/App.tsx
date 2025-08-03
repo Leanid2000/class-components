@@ -1,21 +1,16 @@
-import { useLayoutEffect, useRef, useState } from 'react';
-import SearchComponent from './components/SearchComponent/SearchComponent';
-import DisplayComponent from './components/DisplayComponent/DisplayComponent';
+import { useContext, useEffect, useRef, useState } from 'react';
+import SearchComponent from './components/Search/Search';
+import DisplayComponent from './components/Display/Display';
 import type { Pokemon } from './utils/interfaces/pokemonInterfaces';
 import ErrorComponent from './components/ErrorBoundary/ErrorComponent/ErrorComponent';
 import './App.css';
 import { useLocalStorage } from './hooks/useLocalStorage';
 import { Outlet, useNavigate, useParams } from 'react-router-dom';
-
-interface State {
-  inputValue: string;
-  pokemons: Pokemon[];
-  loading: boolean;
-  isFound: boolean;
-  isClickError: boolean;
-  isAllPokemons: boolean;
-  //   firstLayout:boolean
-}
+import { useDispatch, useSelector } from 'react-redux';
+import type { AppDispatch, RootState } from './redux/store';
+import { setBasicCondition } from './redux/basicConditionSlice';
+import { Flyout } from './components/Flyout/Flyout';
+import { ThemeContext } from './components/ThemeContext/ThemeContext';
 
 interface PokemonSpecies {
   flavor_text_entries: PokemonSpeciesText[];
@@ -36,23 +31,22 @@ interface PokemonsResult {
   name: string;
   id: number;
 }
-const initialState = {
-  inputValue: '',
-  pokemons: [],
-  loading: false,
-  isFound: true,
-  isClickError: false,
-  isAllPokemons: true,
-  // firstLayout: true
-};
 
 const App = () => {
-  const [state, setState] = useState<State>(initialState);
   const [valueInStorage, setValueInStorage] = useLocalStorage();
   const { page } = useParams<{ page: string }>();
   const navigate = useNavigate();
   const isFirstLayout = useRef(true);
-
+  const [isClickError, setIsClickError] = useState(false);
+  const dispatch = useDispatch<AppDispatch>();
+  const theme = useContext(ThemeContext);
+  const basicCondition = useSelector(
+    (state: RootState) => state.basicCondition.basicCondition
+  );
+  const selectedItems = useSelector(
+    (state: RootState) => state.selectedItems.items
+  );
+  const trueTheme = theme?.theme || 'light';
   const getSpecies = async (value: string) => {
     const getSpecies = await fetch(
       `https://pokeapi.co/api/v2/pokemon-species/${value}`
@@ -84,31 +78,41 @@ const App = () => {
     isAllPokemons: boolean,
     localValue?: string
   ) => {
-    setState({
-      ...state,
-      loading: false,
-      pokemons: result,
-      isFound: true,
-      isAllPokemons: isAllPokemons,
-    });
-    setValueInStorage(localValue || state.inputValue);
+    dispatch(
+      setBasicCondition({
+        ...basicCondition,
+        loading: false,
+        pokemons: result,
+        isFound: true,
+        isAllPokemons: isAllPokemons,
+      })
+    );
+    setValueInStorage(localValue || basicCondition.inputValue);
   };
   const getResults = async (offset: number, localValue?: string) => {
-    setState({ ...state, loading: true, pokemons: [], isFound: true });
-    console.log(localValue);
+    dispatch(
+      setBasicCondition({
+        ...basicCondition,
+        loading: true,
+        pokemons: [],
+        isFound: true,
+      })
+    );
     try {
       const getPokemons = await fetch(
-        `https://pokeapi.co/api/v2/pokemon/${localValue || state.inputValue}?limit=20&offset=${offset * 20}`
+        `https://pokeapi.co/api/v2/pokemon/${localValue || basicCondition.inputValue}?limit=20&offset=${offset * 20}`
       );
       if (getPokemons.status === 404) {
-        setState({
-          ...state,
-          pokemons: [],
-          isFound: false,
-          loading: false,
-          isAllPokemons: false,
-        });
-        setValueInStorage(localValue || state.inputValue);
+        dispatch(
+          setBasicCondition({
+            ...basicCondition,
+            pokemons: [],
+            isFound: false,
+            loading: false,
+            isAllPokemons: false,
+          })
+        );
+        setValueInStorage(localValue || basicCondition.inputValue);
         return;
       }
       const pokemonsResult: PokemonsResult = await getPokemons.json();
@@ -144,62 +148,69 @@ const App = () => {
         }
       }
     } catch {
-      setState({
-        ...state,
-        loading: false,
-        isFound: false,
-        pokemons: [],
-        isClickError: true,
-      });
+      dispatch(
+        setBasicCondition({
+          ...basicCondition,
+          loading: false,
+          isFound: false,
+          pokemons: [],
+        })
+      );
+      setIsClickError(true);
     }
   };
 
   const setInputValue = (value: string) => {
-    setState({ ...state, inputValue: value });
+    dispatch(setBasicCondition({ ...basicCondition, inputValue: value }));
   };
-  useLayoutEffect(() => {
+
+  const changeTheme = () => {
+    if (theme?.theme === 'light') {
+      theme.setTheme('dark');
+    } else {
+      theme?.setTheme('light');
+    }
+  };
+  useEffect(() => {
     if (isFirstLayout.current) {
       if (!page) {
         navigate(`/1/`);
         getResults(0, valueInStorage);
-        console.log('1');
       }
-
       isFirstLayout.current = false;
-      //  console.log(state.firstLayout)
     }
     if (page) {
-      console.log('2');
-
       getResults(Number(page) - 1, valueInStorage);
     }
   }, [page]);
-  if (state.isClickError) {
+
+  if (isClickError) {
     return <ErrorComponent />;
   }
 
   return (
-    <div className="basicBlock">
+    <div
+      className={`${trueTheme}BasicBlock`}
+      style={basicCondition.pokemons.length === 1 ? { height: '100vh' } : {}}
+    >
       <div className="searchBlockComponent">
         <SearchComponent
           setInputValue={setInputValue}
           getResults={getResults}
         />
+        <button className={`${trueTheme}ButtonTheme`} onClick={changeTheme}>
+          Theme
+        </button>
         <button
-          className="buttonAboutUs"
+          className={`${trueTheme}ButtonAboutUs`}
           onClick={() => navigate(`/${page}/about`)}
         >
           About us
         </button>
-        <DisplayComponent
-          pokemons={state.pokemons}
-          isFound={state.isFound}
-          loading={state.loading}
-          isAllPokemons={state.isAllPokemons}
-        />
+        <DisplayComponent />
         <button
-          className="errorButton"
-          onClick={() => setState({ ...state, isClickError: true })}
+          className={`${trueTheme}ErrorButton`}
+          onClick={() => setIsClickError(true)}
         >
           Error
         </button>
@@ -207,6 +218,7 @@ const App = () => {
       <div>
         <Outlet context={{ getSpecies }} />
       </div>
+      {selectedItems.length > 0 && <Flyout />}
     </div>
   );
 };

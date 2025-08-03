@@ -1,9 +1,9 @@
 import { createBrowserRouter } from 'react-router-dom';
 import App from '../App';
 import ErrorBoundary from '../components/ErrorBoundary/ErrorBoundary';
-import { DetailsComponent } from '../components/DetailsComponent/DetailsComponent';
-import { AboutUsComponent } from '../components/AboutUsCompmnent/AboutUsCompmnent';
-import { ErrorPage } from '../components/ErrorPage/ErrorPage';
+import { DetailsComponent } from '../components/Details/Details';
+import { ErrorPage } from '../components/ErrorPage/Error';
+import { AboutUsPage } from '../pages/AboutUsPage';
 
 export const AppRouter = createBrowserRouter([
   {
@@ -28,6 +28,6 @@ export const AppRouter = createBrowserRouter([
   },
   {
     path: ':page/about',
-    element: <AboutUsComponent />,
+    element: <AboutUsPage />,
   },
 ]);

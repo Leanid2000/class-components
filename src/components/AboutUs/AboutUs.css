@@ -1,0 +1,29 @@
+.lightAboutUsComponent,
+.darkAboutUsComponent {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  background-color: #ffff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.darkAboutUsComponent {
+  background-color: rgb(46, 43, 43);
+  color: wheat;
+}
+
+.aboutUsText {
+  width: 400px;
+  text-align: center;
+  margin-top: 40px;
+  margin-bottom: 40px;
+}
+
+.linkGitHub,
+.linkRSSchool {
+  text-decoration: none;
+  margin-bottom: 20px;
+}
