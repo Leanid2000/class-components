@@ -1,6 +1,6 @@
 import { useContext, useEffect, useRef, useState } from 'react';
-import SearchComponent from './components/SearchComponent/SearchComponent';
-import DisplayComponent from './components/DisplayComponent/DisplayComponent';
+import SearchComponent from './components/Search/Search';
+import DisplayComponent from './components/Display/Display';
 import type { Pokemon } from './utils/interfaces/pokemonInterfaces';
 import ErrorComponent from './components/ErrorBoundary/ErrorComponent/ErrorComponent';
 import './App.css';

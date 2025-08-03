@@ -1,9 +1,9 @@
 import { createBrowserRouter } from 'react-router-dom';
 import App from '../App';
 import ErrorBoundary from '../components/ErrorBoundary/ErrorBoundary';
-import { DetailsComponent } from '../components/DetailsComponent/DetailsComponent';
-import { AboutUsComponent } from '../components/AboutUsCompmnent/AboutUsComponent';
-import { ErrorPage } from '../components/ErrorPage/ErrorPage';
+import { DetailsComponent } from '../components/Details/Details';
+import { AboutUsComponent } from '../components/AboutUs/AboutUs';
+import { ErrorPage } from '../components/ErrorPage/Error';
 
 export const AppRouter = createBrowserRouter([
   {

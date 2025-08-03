@@ -10,7 +10,6 @@ export const Flyout = () => {
   const selectedItems = useSelector(
     (state: RootState) => state.selectedItems.items
   );
-
   const selectedItemsInformation = useSelector(
     (state: RootState) => state.selectedItems.itemsInfo
   );
