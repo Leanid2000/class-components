@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
-import { AboutUsComponent } from './AboutUs';
+import { AboutUs } from './AboutUs';
 import userEvent from '@testing-library/user-event';
 
 vi.mock('react-router-dom', async (importOriginal) => {
@@ -21,7 +21,7 @@ describe('AboutUsComponent', () => {
   });
 
   it('renders static text and links', () => {
-    render(<AboutUsComponent />);
+    render(<AboutUs />);
 
     expect(
       screen.getByText(/The application is designed to demonstrate/i)
@@ -40,7 +40,7 @@ describe('AboutUsComponent', () => {
   });
 
   it('calls navigate with correct page on button click', async () => {
-    render(<AboutUsComponent />);
+    render(<AboutUs />);
 
     await userEvent.click(
       screen.getByRole('button', { name: /Go to pokemon/i })

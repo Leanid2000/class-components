@@ -2,8 +2,8 @@ import { createBrowserRouter } from 'react-router-dom';
 import App from '../App';
 import ErrorBoundary from '../components/ErrorBoundary/ErrorBoundary';
 import { DetailsComponent } from '../components/Details/Details';
-import { AboutUsComponent } from '../components/AboutUs/AboutUs';
 import { ErrorPage } from '../components/ErrorPage/Error';
+import { AboutUsPage } from '../pages/AboutUsPage';
 
 export const AppRouter = createBrowserRouter([
   {
@@ -28,6 +28,6 @@ export const AppRouter = createBrowserRouter([
   },
   {
     path: ':page/about',
-    element: <AboutUsComponent />,
+    element: <AboutUsPage />,
   },
 ]);

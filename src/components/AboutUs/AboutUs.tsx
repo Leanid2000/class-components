@@ -3,7 +3,7 @@ import './AboutUs.css';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ThemeContext } from '../ThemeContext/ThemeContext';
 
-export const AboutUsComponent = () => {
+export const AboutUs = () => {
   const navigate = useNavigate();
   const { page } = useParams<{ page: string }>();
   const theme = useContext(ThemeContext);

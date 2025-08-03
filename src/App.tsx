@@ -33,7 +33,6 @@ interface PokemonsResult {
 }
 
 const App = () => {
-  //   const [state, setState] = useState<State>(initialState);
   const [valueInStorage, setValueInStorage] = useLocalStorage();
   const { page } = useParams<{ page: string }>();
   const navigate = useNavigate();
@@ -79,13 +78,6 @@ const App = () => {
     isAllPokemons: boolean,
     localValue?: string
   ) => {
-    // setState({
-    //   ...state,
-    //   loading: false,
-    //   pokemons: result,
-    //   isFound: true,
-    //   isAllPokemons: isAllPokemons,
-    // });
     dispatch(
       setBasicCondition({
         ...basicCondition,
@@ -106,7 +98,6 @@ const App = () => {
         isFound: true,
       })
     );
-    // console.log(localValue);
     try {
       const getPokemons = await fetch(
         `https://pokeapi.co/api/v2/pokemon/${localValue || basicCondition.inputValue}?limit=20&offset=${offset * 20}`
@@ -167,7 +158,6 @@ const App = () => {
       );
       setIsClickError(true);
     }
-    // console.log(theme?.theme);
   };
 
   const setInputValue = (value: string) => {
