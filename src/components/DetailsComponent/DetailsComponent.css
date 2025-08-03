@@ -9,7 +9,8 @@
   right: 0;
   bottom: 0;
 }
-.detailsComponentBlock {
+.lightDetailsComponentBlock,
+.darkDetailsComponentBlock {
   position: sticky;
   top: 0;
 
@@ -26,6 +27,9 @@
   margin-left: auto;
 }
 
+.darkDetailsComponentBlock {
+  background-color: rgb(218, 145, 11);
+}
 .imgSelectedPokemon {
   width: 250px;
   height: 250px;

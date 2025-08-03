@@ -8,19 +8,47 @@
   padding: 40px;
 }
 
-.listElement {
+.lightListElement,
+.darkListElement {
   width: 200px;
-  height: 250px;
+  height: 280px;
   border: 1px solid;
   border-radius: 10px;
   cursor: pointer;
 }
+
+.lightListLoading,
+.lightListNotFound,
+.darkListLoading,
+.darkListNotFound {
+  height: 100vh;
+  font-size: 50px;
+}
+
+.darkListLoading,
+.darkListNotFound {
+  color: white;
+}
+.darkListElement {
+  border: 1px solid white;
+  color: white;
+}
 .img {
   margin-left: 50px;
+  margin-bottom: 20px;
 }
 .name,
 .descriptions {
   text-align: center;
+  margin-bottom: 10px;
+}
+
+.descriptions {
+  height: 70px;
+}
+.svgHeart {
+  position: relative;
+  left: 45%;
 }
 
 .paginationBlock {

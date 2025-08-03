@@ -1,6 +1,7 @@
 import { useNavigate, useOutletContext, useParams } from 'react-router-dom';
 import './DetailsComponent.css';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
+import { ThemeContext } from '../ThemeContext/ThemeContext';
 
 interface Species {
   speciesEn: { flavor_text: string };
@@ -18,30 +19,31 @@ export const DetailsComponent = () => {
   });
   const { pokemonId } = useParams<{ pokemonId: string }>();
   const { page } = useParams<{ page: string }>();
-
+  const theme = useContext(ThemeContext);
+  const trueTheme = theme?.theme || 'light';
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { getSpecies } = useOutletContext<{
     getSpecies: (value: string) => Promise<Species>;
   }>();
-  const getPokemonInf = async () => {
-    setLoading(true);
-    const information = await getSpecies(pokemonId || '1');
-    setPokemonInf({ ...information });
-    setLoading(false);
-  };
 
   const handleClick = () => {
     navigate(`/${page}/`);
   };
   useEffect(() => {
+    const getPokemonInf = async () => {
+      setLoading(true);
+      const information = await getSpecies(pokemonId || '1');
+      setPokemonInf({ ...information });
+      setLoading(false);
+    };
     getPokemonInf();
-  }, [pokemonId]);
+  }, [pokemonId, getSpecies]);
 
   return (
     <>
       <div className="background" onClick={handleClick}></div>
-      <div className="detailsComponentBlock">
+      <div className={`${trueTheme}DetailsComponentBlock`}>
         {!loading ? (
           <>
             <img

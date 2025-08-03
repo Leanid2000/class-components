@@ -2,7 +2,7 @@ import { createBrowserRouter } from 'react-router-dom';
 import App from '../App';
 import ErrorBoundary from '../components/ErrorBoundary/ErrorBoundary';
 import { DetailsComponent } from '../components/DetailsComponent/DetailsComponent';
-import { AboutUsComponent } from '../components/AboutUsCompmnent/AboutUsCompmnent';
+import { AboutUsComponent } from '../components/AboutUsCompmnent/AboutUsComponent';
 import { ErrorPage } from '../components/ErrorPage/ErrorPage';
 
 export const AppRouter = createBrowserRouter([

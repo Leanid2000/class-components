@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
-import { AboutUsComponent } from './AboutUsCompmnent';
+import { AboutUsComponent } from './AboutUsComponent';
 import userEvent from '@testing-library/user-event';
 
 vi.mock('react-router-dom', async (importOriginal) => {

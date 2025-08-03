@@ -1,9 +1,20 @@
-.basicBlock {
+.lightBasicBlock,
+.darkBasicBlock {
   display: flex;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
 }
 
-.errorButton,
-.buttonAboutUs {
+.darkBasicBlock {
+  background-color: rgb(46, 43, 43);
+}
+.lightErrorButton,
+.lightButtonAboutUs,
+.darkErrorButton,
+.darkButtonAboutUs,
+.lightButtonTheme,
+.darkButtonTheme {
   border: none;
   display: flex;
   background-color: rgb(46, 204, 40);
@@ -15,10 +26,17 @@
   align-items: center;
   justify-content: center;
   margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.darkErrorButton,
+.darkButtonAboutUs,
+.darkButtonTheme {
+  background-color: aqua;
 }
 
 .searchBlockComponent {
-  margin: auto;
+  /* margin: auto; */
 }
 
 .buttonAboutUs {

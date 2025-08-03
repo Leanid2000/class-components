@@ -14,7 +14,8 @@
   font-size: 20px;
   margin-bottom: 10px;
 }
-.button {
+.lightButton,
+.darkButton {
   height: 30px;
   width: 70px;
   border: 0;
@@ -22,6 +23,13 @@
   border-radius: 10px;
   cursor: pointer;
 }
-.button:hover {
+.darkButton {
+  background-color: rgb(190, 219, 23);
+}
+.lightButton:hover {
   background-color: rgb(147, 252, 9);
+}
+
+.darkButton:hover {
+  background-color: rgb(209, 245, 6);
 }

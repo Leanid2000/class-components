@@ -1,4 +1,5 @@
-.aboutUsCompmnent {
+.lightAboutUsComponent,
+.darkAboutUsComponent {
   position: fixed;
   top: 0;
   right: 0;
@@ -9,12 +10,20 @@
   flex-direction: column;
   align-items: center;
 }
+.darkAboutUsComponent {
+  background-color: rgb(46, 43, 43);
+  color: wheat;
+}
+
 .aboutUsText {
   width: 400px;
   text-align: center;
+  margin-top: 40px;
+  margin-bottom: 40px;
 }
 
-.link {
+.linkGitHub,
+.linkRSSchool {
   text-decoration: none;
   margin-bottom: 20px;
 }
