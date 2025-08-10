@@ -28,9 +28,6 @@ export const Card = ({ element }: { element: string }) => {
     }
     return <p className="error">Error</p>;
   }
-  //   if (!pokemon || !pokemonSpecies) return <></>;
-
-  //   if (isFetching) return <div>LLLLLL</div>;
 
   return (
     <div

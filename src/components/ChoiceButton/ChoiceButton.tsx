@@ -11,11 +11,8 @@ export const ChoiceButton = ({
 }) => {
   const theme = useContext(ThemeContext);
   const trueTheme = theme?.theme || 'light';
-  const selectColor = isSelected
-    ? 'red'
-    : trueTheme === 'light'
-      ? 'black'
-      : 'green';
+  const unselectedColor = trueTheme === 'light' ? 'black' : 'green';
+  const selectColor = isSelected ? 'red' : unselectedColor;
 
   return (
     <svg

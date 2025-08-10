@@ -53,6 +53,7 @@ const App = () => {
       theme?.setTheme('light');
     }
   };
+
   useEffect(() => {
     if (isFirstLayout.current) {
       if (!page) {

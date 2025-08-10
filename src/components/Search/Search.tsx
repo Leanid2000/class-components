@@ -19,7 +19,6 @@ const SearchComponent = ({ setInputValue }: SearchProps) => {
     const value = stateInput.trim();
     setInputValue(value);
     setValueInStorage(value);
-    // getResults(0, value);
   };
 
   return (

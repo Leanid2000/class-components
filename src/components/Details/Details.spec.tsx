@@ -55,11 +55,6 @@ describe('DetailsComponent', () => {
     });
 
     renderWithStore({}, <DetailsComponent />);
-
-    // expect(screen.getByText(/loading/i)).toBeInTheDocument();
-    // await waitFor(() => {
-    //   expect(screen.getByAltText('pokemonInf.img')).toBeInTheDocument();
-    // });
     await waitFor(() => {
       expect(screen.getByText(/pokemon1/i)).toBeInTheDocument();
     });

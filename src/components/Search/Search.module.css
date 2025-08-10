@@ -22,13 +22,7 @@
   border-radius: 10px;
   cursor: pointer;
 }
-/* .darkButton {
-  background-color: rgb(190, 219, 23);
-} */
+
 .searchButton:hover {
   background-color: var(--search-button-hover);
 }
-
-/* .darkButton:hover {
-  background-color: rgb(209, 245, 6);
-} */

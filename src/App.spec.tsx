@@ -19,8 +19,6 @@ import {
 } from './api/api';
 import type { FetchBaseQueryError } from '@reduxjs/toolkit/query';
 
-// globalThis.fetch = vi.fn();
-
 vi.mock('react-router-dom', async (importOriginal) => {
   const actual = (await importOriginal()) as object;
 
