@@ -20,8 +20,11 @@ export const DetailsComponent = () => {
     isFetching: isFetchingSpecies,
     error: errorSpecies,
   } = useGetPokemonSpeciesQuery(pokemonId || '');
-
   const isFetching = isFetchingPokemon || isFetchingSpecies;
+  const pokemonName = pokemon?.name.toUpperCase();
+  const pokemonDescription =
+    pokemonSpecies?.descriptions || 'There is no description';
+  const pokemonImg = pokemon?.img;
 
   const handleClick = () => {
     navigate(`/${page}/`);
@@ -41,25 +44,23 @@ export const DetailsComponent = () => {
     <>
       <div className={styles.background} onClick={handleClick}></div>
       <div className={styles.detailsComponentBlock}>
-        {!isFetching ? (
+        {isFetching ? (
+          <div className={styles.loading}>Loading...</div>
+        ) : (
           <>
             <img
-              src={pokemon?.img}
-              alt={'pokemonInf.img'}
+              src={pokemonImg}
+              alt={pokemonName}
               className={styles.imgSelectedPokemon}
             />
-            <p className={styles.speciesPokemonName}>
-              {pokemon?.name.toUpperCase()}
-            </p>
+            <p className={styles.speciesPokemonName}>{pokemonName}</p>
             <p className={styles.speciesSelectedPokemon}>
-              {pokemonSpecies?.descriptions || 'There is no description'}
+              {pokemonDescription}
             </p>
             <button onClick={handleClick} className={styles.closeButton}>
               Close
             </button>
           </>
-        ) : (
-          <div className={styles.loading}>Loading...</div>
         )}
       </div>
     </>
