@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">79.59% </span>
+                <span class="strong">83.33% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>39/49</span>
+                <span class='fraction'>45/54</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">79.59% </span>
+                <span class="strong">83.33% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>39/49</span>
+                <span class='fraction'>45/54</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line medium'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -133,12 +133,6 @@
 <a name='L68'></a><a href='#L68'>68</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -148,7 +142,14 @@
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -184,7 +185,6 @@
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -197,43 +197,44 @@
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { useNavigate, useOutletContext, useParams } from 'react-router-dom';
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { useNavigate, useParams } from 'react-router-dom';
 import styles from './Details.module.css';
-import { useContext, useEffect, useState } from 'react';
-import { ThemeContext } from '../ThemeContext/ThemeContext';
-import { useGetPokemonQuery, useGetPokemonSpeciesQuery } from '../../api/api';
-&nbsp;
-interface Species {
-  speciesEn: { flavor_text: string };
-  img: string;
-  id: number;
-  name: string;
-}
+import {
+  useGetPokemonQuery,
+  useGetPokemonSpeciesQuery,
+} from '../../api/pokemonApi';
 &nbsp;
 export const DetailsComponent = () =&gt; {
   const { pokemonId } = useParams&lt;{ pokemonId: string }&gt;();
   const { page } = useParams&lt;{ page: string }&gt;();
   const navigate = useNavigate();
 &nbsp;
+  const {
+    data: pokemon,
+    isFetching: isFetchingPokemon,
+    error: errorPokemon,
+  } = useGetPokemonQuery(<span class="branch-0 cbranch-no" title="branch not covered" >pokemonId || '')</span>;
+  const {
+    data: pokemonSpecies,
+    isFetching: isFetchingSpecies,
+    error: errorSpecies,
+  } = useGetPokemonSpeciesQuery(<span class="branch-0 cbranch-no" title="branch not covered" >pokemonId || '')</span>;
 &nbsp;
-const { data: pokemon, isFetching:isFetchingPokemon, error: errorPokemon } = useGetPokemonQuery(<span class="branch-0 cbranch-no" title="branch not covered" >pokemonId||'')</span>;
- const { data: pokemonSpecies, isFetching:isFetchingSpecies, error: errorSpecies } = useGetPokemonSpeciesQuery(<span class="branch-0 cbranch-no" title="branch not covered" >pokemonId||'')</span>;
-  
- const isFetching = isFetchingPokemon || isFetchingSpecies
+  const isFetching = isFetchingPokemon || isFetchingSpecies;
 &nbsp;
- const handleClick = () =&gt; {
+  const handleClick = () =&gt; {
     navigate(`/${page}/`);
   };
 &nbsp;
   if (errorPokemon || errorSpecies) <span class="branch-0 cbranch-no" title="branch not covered" >{</span>
-<span class="cstat-no" title="statement not covered" >    if(errorPokemon){</span>
-<span class="cstat-no" title="statement not covered" >        console.error('Request error:', errorPokemon);</span>
+<span class="cstat-no" title="statement not covered" >    if (errorPokemon) {</span>
+<span class="cstat-no" title="statement not covered" >      console.error('Request error:', errorPokemon);</span>
 <span class="cstat-no" title="statement not covered" >    }</span>
-<span class="cstat-no" title="statement not covered" >    if(errorSpecies){</span>
-<span class="cstat-no" title="statement not covered" >        console.error('Request error:', errorSpecies);</span>
+<span class="cstat-no" title="statement not covered" >    if (errorSpecies) {</span>
+<span class="cstat-no" title="statement not covered" >      console.error('Request error:', errorSpecies);</span>
 <span class="cstat-no" title="statement not covered" >    }</span>
-<span class="cstat-no" title="statement not covered" >    return  &lt;p className='error'&gt;Error&lt;/p&gt;;</span>
-<span class="cstat-no" title="statement not covered" >}</span>
+<span class="cstat-no" title="statement not covered" >    return &lt;p className="error"&gt;Error&lt;/p&gt;;</span>
+<span class="cstat-no" title="statement not covered" >  }</span>
 &nbsp;
   return (
     &lt;&gt;
@@ -250,8 +251,7 @@ const { data: pokemon, isFetching:isFetchingPokemon, error: errorPokemon } = use
               {pokemon?.name.toUpperCase()}
             &lt;/p&gt;
             &lt;p className={styles.speciesSelectedPokemon}&gt;
-              {pokemonSpecies?.<span class="branch-0 cbranch-no" title="branch not covered" >descriptions ||</span>
-<span class="cstat-no" title="statement not covered" >                'There is no description'}</span>
+              {pokemonSpecies?.<span class="branch-0 cbranch-no" title="branch not covered" >descriptions || 'There is no description'}</span>
             &lt;/p&gt;
             &lt;button onClick={handleClick} className={styles.closeButton}&gt;
               Close
@@ -271,7 +271,7 @@ const { data: pokemon, isFetching:isFetchingPokemon, error: errorPokemon } = use
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-08-10T19:16:26.021Z
+                at 2025-08-10T23:24:20.432Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

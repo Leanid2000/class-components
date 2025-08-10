@@ -7,10 +7,11 @@ import { useLocalStorage } from './hooks/useLocalStorage';
 import { Outlet, useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import type { AppDispatch, RootState } from './redux/store';
-import { setBasicCondition } from './redux/basicConditionSlice';
+import { setPokemonState } from './redux/pokemonStateSlice';
 import { Flyout } from './components/Flyout/Flyout';
 import { ThemeContext } from './components/ThemeContext/ThemeContext';
-import { pokemonApi, useGetAllPokemonsQuery } from './api/api';
+import { pokemonApi, useGetAllPokemonsQuery } from './api/pokemonApi';
+import { CONSTANTS } from './utils/constants/constants';
 
 const App = () => {
   const [valueInStorage] = useLocalStorage();
@@ -21,25 +22,24 @@ const App = () => {
   const dispatch = useDispatch<AppDispatch>();
   const theme = useContext(ThemeContext);
   const basicCondition = useSelector(
-    (state: RootState) => state.basicCondition.basicCondition
+    (state: RootState) => state.pokemonState.inputValue
   );
   const selectedItems = useSelector(
     (state: RootState) => state.selectedItems.items
   );
-
   const offset = Number(page) - 1;
-
+  const isItemSelected = selectedItems.length > 0;
   const {
     data: allPokemons,
     isFetching,
     error,
   } = useGetAllPokemonsQuery({
     offset,
-    valueInStorage: basicCondition.inputValue || valueInStorage,
+    valueInStorage: basicCondition,
   });
 
   const setInputValue = (value: string) => {
-    dispatch(setBasicCondition({ ...basicCondition, inputValue: value }));
+    dispatch(setPokemonState(value));
   };
 
   const updateСache = () => {
@@ -47,11 +47,19 @@ const App = () => {
   };
 
   const changeTheme = () => {
-    if (theme?.theme === 'light') {
-      theme.setTheme('dark');
+    if (theme?.theme === CONSTANTS.LIGHT_THEME) {
+      theme.setTheme(CONSTANTS.DARK_THEME);
     } else {
-      theme?.setTheme('light');
+      theme?.setTheme(CONSTANTS.LIGHT_THEME);
     }
+  };
+
+  const handleNavigateToAboutPage = () => {
+    navigate(`/${page}/about`);
+  };
+
+  const setError = () => {
+    setIsClickError(true);
   };
 
   useEffect(() => {
@@ -59,6 +67,7 @@ const App = () => {
       if (!page) {
         navigate(`/1/`);
       }
+      dispatch(setPokemonState(valueInStorage));
       isFirstLayout.current = false;
     }
   }, [page]);
@@ -76,7 +85,7 @@ const App = () => {
         </button>
         <button
           className={styles.buttonAboutUs}
-          onClick={() => navigate(`/${page}/about`)}
+          onClick={handleNavigateToAboutPage}
         >
           About us
         </button>
@@ -88,17 +97,14 @@ const App = () => {
           error={error}
           isFetching={isFetching}
         />
-        <button
-          className={styles.errorButton}
-          onClick={() => setIsClickError(true)}
-        >
+        <button className={styles.errorButton} onClick={setError}>
           Error
         </button>
       </div>
       <div>
         <Outlet />
       </div>
-      {selectedItems.length > 0 && <Flyout />}
+      {isItemSelected && <Flyout />}
     </div>
   );
 };

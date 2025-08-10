@@ -1,3 +1,4 @@
+import { CONSTANTS } from '../../utils/constants/constants';
 import styles from './AboutUs.module.css';
 import { useNavigate, useParams } from 'react-router-dom';
 
@@ -14,11 +15,10 @@ export const AboutUs = () => {
         The application is designed to demonstrate the React: Routing and Hooks
         task as part of the RSSchool React 2025 Q3 course.
       </h2>
-      <p></p>
-      <a href="https://github.com/Leanid2000" className={styles.linkGitHub}>
+      <a href={CONSTANTS.GITHUb_LINK} className={styles.linkGitHub}>
         My GitHub
       </a>
-      <a href="https://rs.school/" className={styles.linkRSSchool}>
+      <a href={CONSTANTS.RS_LINK} className={styles.linkRSSchool}>
         RS School
       </a>
       <button className={styles.goToPokemonButton} onClick={handleClick}>

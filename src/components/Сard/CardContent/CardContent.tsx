@@ -36,6 +36,10 @@ export const CardContent = ({
   );
   const information = { ...pokemon, ...pokemonSpecies };
   const isSelected = selectedItems.includes(pokemon.id);
+  const pokemonName = pokemon.name.toUpperCase();
+  const pokemonDescription =
+    pokemonSpecies?.descriptions || 'There is no description';
+  const pokemonImg = pokemon.img;
 
   const setItem = (event: React.MouseEvent<SVGSVGElement>): void => {
     event.stopPropagation();
@@ -52,11 +56,9 @@ export const CardContent = ({
 
   return (
     <div className={styles.contentContainer}>
-      <img src={pokemon.img} alt={pokemon.name} className={styles.img} />
-      <p className={styles.name}>{pokemon.name.toUpperCase()}</p>
-      <p className={styles.descriptions}>
-        {pokemonSpecies?.descriptions || 'There is no description'}
-      </p>
+      <img src={pokemonImg} alt={pokemonName} className={styles.img} />
+      <p className={styles.name}>{pokemonName}</p>
+      <p className={styles.descriptions}>{pokemonDescription}</p>
       <ChoiceButton isSelected={isSelected} onClick={setItem} />
     </div>
   );

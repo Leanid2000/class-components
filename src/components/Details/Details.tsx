@@ -1,6 +1,9 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import styles from './Details.module.css';
-import { useGetPokemonQuery, useGetPokemonSpeciesQuery } from '../../api/api';
+import {
+  useGetPokemonQuery,
+  useGetPokemonSpeciesQuery,
+} from '../../api/pokemonApi';
 
 export const DetailsComponent = () => {
   const { pokemonId } = useParams<{ pokemonId: string }>();

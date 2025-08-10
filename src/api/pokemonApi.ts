@@ -7,10 +7,11 @@ import type {
   PokemonSpecies,
   PokemonsResult,
 } from '../utils/interfaces/pokemonInterfaces';
+import { CONSTANTS } from '../utils/constants/constants';
 
 export const pokemonApi = createApi({
   reducerPath: 'pokemonApi',
-  baseQuery: fetchBaseQuery({ baseUrl: 'https://pokeapi.co/api/v2/' }),
+  baseQuery: fetchBaseQuery({ baseUrl: CONSTANTS.API_BASE_URL }),
   tagTypes: ['Pokemons'],
   endpoints: (build) => ({
     getAllPokemons: build.query<

@@ -3,7 +3,10 @@ import { screen, waitFor } from '@testing-library/react';
 import { DetailsComponent } from './Details';
 import userEvent from '@testing-library/user-event';
 import { renderWithStore } from '../../test/test-utils/renderWithMockStore';
-import { useGetPokemonQuery, useGetPokemonSpeciesQuery } from '../../api/api';
+import {
+  useGetPokemonQuery,
+  useGetPokemonSpeciesQuery,
+} from '../../api/pokemonApi';
 import type { Middleware } from '@reduxjs/toolkit';
 
 const mockedNavigate = vi.fn();
@@ -18,7 +21,7 @@ vi.mock('react-router-dom', async (importOriginal) => {
   };
 });
 
-vi.mock('../../api/api', () => {
+vi.mock('../../api/pokemonApi', () => {
   const middleware: Middleware = () => (next) => (action) => {
     return next(action);
   };

@@ -27,10 +27,7 @@ const selectedItems = createSlice({
       state.items.splice(element, 1);
       state.itemsInfo.splice(element, 1);
     },
-    deleteAllSelectedItem: (state) => {
-      state.items = [];
-      state.itemsInfo = [];
-    },
+    deleteAllSelectedItem: () => initialState,
   },
 });
 

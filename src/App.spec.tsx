@@ -16,7 +16,7 @@ import {
   useGetAllPokemonsQuery,
   useGetPokemonQuery,
   useGetPokemonSpeciesQuery,
-} from './api/api';
+} from './api/pokemonApi';
 import type { FetchBaseQueryError } from '@reduxjs/toolkit/query';
 
 vi.mock('react-router-dom', async (importOriginal) => {
@@ -29,7 +29,7 @@ vi.mock('react-router-dom', async (importOriginal) => {
     Outlet: () => <div>Outlet</div>,
   };
 });
-vi.mock('./api/api', () => {
+vi.mock('./api/pokemonApi', () => {
   const middleware: Middleware = () => (next) => (action) => {
     return next(action);
   };
