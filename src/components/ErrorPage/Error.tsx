@@ -1,5 +1,5 @@
-import './Error.css';
 import { useNavigate } from 'react-router-dom';
+import styles from './Error.module.css';
 
 export const ErrorPage = () => {
   const navigate = useNavigate();
@@ -8,8 +8,8 @@ export const ErrorPage = () => {
   };
   return (
     <>
-      <p className="errorBlock">404</p>
-      <button onClick={handleClick} className="errorButton">
+      <p className={styles.errorBlock}>404</p>
+      <button onClick={handleClick} className={styles.errorButton}>
         To the main page
       </button>
     </>

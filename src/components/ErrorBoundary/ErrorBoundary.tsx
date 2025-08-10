@@ -1,5 +1,5 @@
 import { Component, type ReactNode, type ErrorInfo } from 'react';
-import './ErrorBoundary.css';
+import styles from './ErrorBoundary.module.css';
 
 interface Props {
   children: ReactNode;
@@ -31,10 +31,10 @@ class ErrorBoundary extends Component<Props, State> {
   render() {
     if (this.state.hasError) {
       return (
-        <div className="errorBoundary">
+        <div className={styles.errorBoundary}>
           <h2>Something went wrong.</h2>
           <p>{this.state.error?.message}</p>
-          <button className="errorButton" onClick={this.handleReset}>
+          <button className={styles.errorButton} onClick={this.handleReset}>
             Try again
           </button>
         </div>

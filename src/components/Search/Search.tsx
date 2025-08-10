@@ -1,18 +1,15 @@
-import { useContext, useState, type ChangeEvent } from 'react';
-import './search.css';
+import { useState, type ChangeEvent } from 'react';
 import { useLocalStorage } from '../../hooks/useLocalStorage';
-import { ThemeContext } from '../ThemeContext/ThemeContext';
+
+import styles from './Search.module.css';
 
 interface SearchProps {
   setInputValue: (value: string) => void;
-  getResults: (page: number, value: string) => void;
 }
 
-const SearchComponent = ({ setInputValue, getResults }: SearchProps) => {
+const SearchComponent = ({ setInputValue }: SearchProps) => {
   const [valueInStorage, setValueInStorage] = useLocalStorage();
   const [stateInput, setStateInput] = useState(valueInStorage);
-  const theme = useContext(ThemeContext);
-  const trueTheme = theme?.theme || 'light';
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setStateInput(event.target.value);
@@ -22,18 +19,18 @@ const SearchComponent = ({ setInputValue, getResults }: SearchProps) => {
     const value = stateInput.trim();
     setInputValue(value);
     setValueInStorage(value);
-    getResults(0, value);
+    // getResults(0, value);
   };
 
   return (
-    <div className="searchBlock">
+    <div className={styles.searchBlock}>
       <input
         type="text"
-        className="searchInput"
+        className={styles.searchInput}
         value={stateInput}
         onChange={handleChange}
       />
-      <button className={`${trueTheme}Button`} onClick={handleClick}>
+      <button className={styles.searchButton} onClick={handleClick}>
         Search
       </button>
     </div>

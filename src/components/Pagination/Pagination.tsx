@@ -1,4 +1,5 @@
 import { useNavigate, useParams } from 'react-router-dom';
+import styles from './Pagination.module.css';
 
 export const Pagination = () => {
   const navigate = useNavigate();
@@ -9,12 +10,12 @@ export const Pagination = () => {
   };
 
   return (
-    <div className="paginationBlock">
+    <div className={styles.paginationBlock}>
       {new Array(10).fill(0).map((__, num: number) => {
         return (
           <div
             key={num}
-            className="paginationElement"
+            className={styles.paginationElement}
             onClick={() => handleClick(num)}
             style={{
               backgroundColor: Number(page) === num + 1 ? '#4caf50' : '#eee',

@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">91.3% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>21/23</span>
+                <span class='fraction'>24/24</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>4/4</span>
+                <span class='fraction'>6/6</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">33.33% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>1/3</span>
+                <span class='fraction'>3/3</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">91.3% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>21/23</span>
+                <span class='fraction'>24/24</span>
             </div>
         
             
@@ -90,68 +90,77 @@
 <a name='L25'></a><a href='#L25'>25</a>
 <a name='L26'></a><a href='#L26'>26</a>
 <a name='L27'></a><a href='#L27'>27</a>
-<a name='L28'></a><a href='#L28'>28</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L28'></a><a href='#L28'>28</a>
+<a name='L29'></a><a href='#L29'>29</a>
+<a name='L30'></a><a href='#L30'>30</a>
+<a name='L31'></a><a href='#L31'>31</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">12x</span>
-<span class="cline-any cline-yes">12x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">12x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">12x</span>
-<span class="cline-any cline-yes">12x</span>
-<span class="cline-any cline-yes">120x</span>
-<span class="cline-any cline-yes">120x</span>
-<span class="cline-any cline-yes">120x</span>
-<span class="cline-any cline-yes">120x</span>
-<span class="cline-any cline-yes">120x</span>
-<span class="cline-any cline-yes">120x</span>
-<span class="cline-any cline-yes">120x</span>
-<span class="cline-any cline-yes">120x</span>
-<span class="cline-any cline-yes">120x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">60x</span>
+<span class="cline-any cline-yes">60x</span>
+<span class="cline-any cline-yes">60x</span>
+<span class="cline-any cline-yes">60x</span>
+<span class="cline-any cline-yes">60x</span>
+<span class="cline-any cline-yes">60x</span>
+<span class="cline-any cline-yes">60x</span>
+<span class="cline-any cline-yes">60x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">120x</span>
-<span class="cline-any cline-yes">120x</span>
+<span class="cline-any cline-yes">60x</span>
+<span class="cline-any cline-yes">60x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">12x</span>
-<span class="cline-any cline-yes">12x</span>
-<span class="cline-any cline-yes">12x</span></td><td class="text"><pre class="prettyprint lang-js">import { useNavigate, useParams } from "react-router-dom";
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { useNavigate, useParams } from 'react-router-dom';
+import styles from './Pagination.module.css';
 &nbsp;
-export const Pagination=()=&gt;{
-    const navigate = useNavigate();
- const { page } = useParams&lt;{ page: string }&gt;();
+export const Pagination = () =&gt; {
+  const navigate = useNavigate();
+  const { page } = useParams&lt;{ page: string }&gt;();
 &nbsp;
-const handleClick = <span class="fstat-no" title="function not covered" >(newPage: number) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    navigate(`/${newPage + 1}/`);</span>
-<span class="cstat-no" title="statement not covered" >  };</span>
-  
-    return  &lt;div className="paginationBlock"&gt;
-          {new Array(10).fill(0).map((__, num: number) =&gt; {
-            return (
-              &lt;div
-                key={num}
-                className="paginationElement"
-                onClick={<span class="fstat-no" title="function not covered" >() =&gt; handleClick(num)}</span>
-                style={{
-                  backgroundColor:
-                    Number(page) === num + 1 ? '#4caf50' : '#eee',
-                }}
-              &gt;
-                {num + 1}
-              &lt;/div&gt;
-            );
-          })}
-        &lt;/div&gt;
-}</pre></td></tr></table></pre>
+  const handleClick = (newPage: number) =&gt; {
+    navigate(`/${newPage + 1}/`);
+  };
+&nbsp;
+  return (
+    &lt;div className={styles.paginationBlock}&gt;
+      {new Array(10).fill(0).map((__, num: number) =&gt; {
+        return (
+          &lt;div
+            key={num}
+            className={styles.paginationElement}
+            onClick={() =&gt; handleClick(num)}
+            style={{
+              backgroundColor: Number(page) === num + 1 ? '#4caf50' : '#eee',
+            }}
+          &gt;
+            {num + 1}
+          &lt;/div&gt;
+        );
+      })}
+    &lt;/div&gt;
+  );
+};
+&nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
             </div><!-- /wrapper -->
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-08-03T23:30:43.236Z
+                at 2025-08-10T19:16:26.021Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

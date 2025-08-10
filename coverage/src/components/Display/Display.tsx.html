@@ -25,14 +25,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>32/32</span>
+                <span class='fraction'>30/30</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">90.9% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>10/11</span>
+                <span class='fraction'>11/11</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>32/32</span>
+                <span class='fraction'>30/30</span>
             </div>
         
             
@@ -105,7 +105,8 @@
 <a name='L40'></a><a href='#L40'>40</a>
 <a name='L41'></a><a href='#L41'>41</a>
 <a name='L42'></a><a href='#L42'>42</a>
-<a name='L43'></a><a href='#L43'>43</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L43'></a><a href='#L43'>43</a>
+<a name='L44'></a><a href='#L44'>44</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -114,76 +115,78 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">28x</span>
-<span class="cline-any cline-yes">28x</span>
-<span class="cline-any cline-yes">28x</span>
-<span class="cline-any cline-yes">28x</span>
-<span class="cline-any cline-yes">28x</span>
-<span class="cline-any cline-yes">28x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">28x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-yes">11x</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-yes">10x</span>
 <span class="cline-any cline-yes">10x</span>
 <span class="cline-any cline-yes">10x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">28x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">15x</span>
-<span class="cline-any cline-yes">15x</span>
-<span class="cline-any cline-yes">15x</span>
-<span class="cline-any cline-yes">15x</span>
-<span class="cline-any cline-yes">15x</span>
-<span class="cline-any cline-yes">15x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">15x</span>
-<span class="cline-any cline-yes">15x</span>
-<span class="cline-any cline-yes">15x</span>
-<span class="cline-any cline-yes">12x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">28x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">28x</span>
+<span class="cline-any cline-yes">10x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { useContext } from 'react';
-import type { Pokemon } from '../../utils/interfaces/pokemonInterfaces';
-import './display.css';
-import {  useSelector } from 'react-redux';
-import type {  RootState } from '../../redux/store';
+import type { Pokemon, PokemonName, PokemonsResult } from '../../utils/interfaces/pokemonInterfaces';
+import styles from './Display.module.css';
+import { useSelector } from 'react-redux';
+import type { RootState } from '../../redux/store';
 import { ThemeContext } from '../ThemeContext/ThemeContext';
 import { Card } from '../Сard/Сard';
 import { Pagination } from '../Pagination/Pagination';
+import type { FetchBaseQueryError } from '@reduxjs/toolkit/query';
+import type { SerializedError } from '@reduxjs/toolkit';
 &nbsp;
-const DisplayComponent = () =&gt; {
-  const theme = useContext(ThemeContext);
-  const trueTheme = <span class="branch-0 cbranch-no" title="branch not covered" >theme?.theme || '</span>light';
-  const basicCondition = useSelector(
-    (state: RootState) =&gt; state.basicCondition.basicCondition
-  );
-  const isPagination = basicCondition.isAllPokemons &amp;&amp; !basicCondition.loading
+const DisplayComponent = ({data=[{name:''}], error, isFetching}:{data: PokemonName[] | undefined,  error: FetchBaseQueryError | SerializedError | undefined, isFetching:boolean }) =&gt; {
 &nbsp;
-  if(basicCondition.loading){
-    return &lt;p className={`${trueTheme}ListLoading`}&gt;loading...&lt;/p&gt;
+  const isPagination = data.length&gt;1;
+&nbsp;
+  if (isFetching) {
+    return &lt;p className={styles.listLoading}&gt;loading...&lt;/p&gt;;
   }
 &nbsp;
-  if(!basicCondition.isFound){
-     return &lt;p className={`${trueTheme}ListNotFound`}&gt;Pokemon not found&lt;/p&gt;
+  if (error &amp;&amp; 'originalStatus' in error) {
+    if(error.originalStatus===404){
+        return &lt;p className={styles.listNotFound}&gt;Pokemon not found&lt;/p&gt;;
+    }else{
+        console.error('Request error:', error);
+        return  &lt;p className={styles.error}&gt;Error: {JSON.stringify(error)}&lt;/p&gt;;
+    }
+    
   }
+&nbsp;
 &nbsp;
   return (
     &lt;&gt;
-      &lt;ul className="list"&gt;
-        {basicCondition.pokemons.map((element: Pokemon) =&gt; {
-          return (
-          &lt;Card key={element.name} element={element}/&gt;
-          );
+      &lt;ul className={styles.list}&gt;
+        {data?.map((element: PokemonName, num:number) =&gt; {
+          return &lt;Card key={num} element={element.name} /&gt;;
         })}
       &lt;/ul&gt;
-      {isPagination &amp;&amp; 
-        &lt;Pagination /&gt;
-      }
+      {isPagination &amp;&amp; &lt;Pagination /&gt;}
     &lt;/&gt;
   );
 };
@@ -196,7 +199,7 @@ export default DisplayComponent;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-08-03T23:30:43.236Z
+                at 2025-08-10T19:16:26.021Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

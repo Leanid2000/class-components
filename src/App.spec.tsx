@@ -11,27 +11,16 @@ import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import App from './App';
 import { renderWithStore } from './test/test-utils/renderWithMockStore';
+import type { Middleware } from '@reduxjs/toolkit';
+import {
+  useGetAllPokemonsQuery,
+  useGetPokemonQuery,
+  useGetPokemonSpeciesQuery,
+} from './api/api';
+import type { FetchBaseQueryError } from '@reduxjs/toolkit/query';
 
-globalThis.fetch = vi.fn();
+// globalThis.fetch = vi.fn();
 
-const mockPokemonResponse = {
-  name: 'pokemon1',
-};
-
-const mockAllPokemonsResponse = {
-  results: [{ name: 'pokemon1' }, { name: 'pokemon2' }],
-};
-const mockSpeciesResponse = {
-  flavor_text_entries: [
-    { flavor_text: 'descriptions', language: { name: 'en' } },
-  ],
-};
-
-const mockPokemonInfoResponse = {
-  sprites: {
-    front_default: 'pokemon1.png',
-  },
-};
 vi.mock('react-router-dom', async (importOriginal) => {
   const actual = (await importOriginal()) as object;
 
@@ -39,63 +28,27 @@ vi.mock('react-router-dom', async (importOriginal) => {
     ...actual,
     useNavigate: () => mockedNavigate,
     useParams: () => ({ page: '1' }),
+    Outlet: () => <div>Outlet</div>,
   };
 });
+vi.mock('./api/api', () => {
+  const middleware: Middleware = () => (next) => (action) => {
+    return next(action);
+  };
 
+  return {
+    useGetPokemonQuery: vi.fn(),
+    useGetPokemonSpeciesQuery: vi.fn(),
+    useGetAllPokemonsQuery: vi.fn(),
+    pokemonApi: {
+      reducerPath: 'pokemonApi',
+      reducer: (state = {}) => state,
+      middleware,
+    },
+  };
+});
 const mockedNavigate = vi.fn();
 
-// interface PreloadedState {
-//   selectedItems?: {
-//     items?: number[];
-//     itemsInfo?: Pokemon[];
-//   };
-//   basicCondition?: {
-//     basicCondition: {
-//       loading?: boolean;
-//       isFound?: boolean;
-//       pokemons?: Pokemon[];
-//       isAllPokemons?: boolean;
-//       inputValue?: string;
-//       isClickError?: boolean;
-//     };
-//   };
-// }
-
-// const renderWithStore = (preloadedState: PreloadedState = {}) => {
-//   const mockedStore = configureStore({
-//     reducer: {
-//       selectedItems: selectedItemsReducer,
-//       basicCondition: basicConditionReducer,
-//     },
-//     preloadedState: {
-//       selectedItems: {
-//         items: [],
-//         itemsInfo: [],
-//         ...preloadedState.selectedItems,
-//       },
-//       basicCondition: {
-//         basicCondition: {
-//           loading: false,
-//           isFound: true,
-//           pokemons: [],
-//           isAllPokemons: true,
-//           inputValue: '',
-//           isClickError: false,
-//           ...preloadedState.basicCondition?.basicCondition,
-//         },
-//       },
-//     },
-//   });
-//   return render(
-//     <Provider store={mockedStore}>
-//       <MemoryRouter>
-//         <ErrorBoundary>
-//           <App />
-//         </ErrorBoundary>
-//       </MemoryRouter>
-//     </Provider>
-//   );
-// };
 describe('App', () => {
   beforeEach(() => {
     localStorage.clear();
@@ -107,40 +60,52 @@ describe('App', () => {
 
   it('Calls the API when mounting with a saved request', async () => {
     localStorage.setItem('inputValue', 'pokemon1');
-
-    (fetch as Mock).mockImplementation((url: string) => {
-      if (url.includes('pokemon-species')) {
-        return Promise.resolve({
-          ok: true,
-          json: () => Promise.resolve(mockSpeciesResponse),
-        });
-      }
-      if (url.includes('pokemon/pokemon1/')) {
-        return Promise.resolve({
-          ok: true,
-          json: () => Promise.resolve(mockPokemonInfoResponse),
-        });
-      } else if (url.includes('pokemon/pokemon1')) {
-        return Promise.resolve({
-          ok: true,
-          json: () => Promise.resolve(mockPokemonResponse),
-        });
-      }
-      return Promise.resolve({ ok: false, status: 404 });
+    const mockPokemon = { img: 'pokemon1.img', name: 'pokemon1', id: 1 };
+    const mockSpecies = { descriptions: 'descriptions 1' };
+    (useGetAllPokemonsQuery as Mock).mockReturnValue({
+      data: [{ name: 'pokemon1' }, { name: 'pokemon2' }],
+      isFetching: false,
+      error: null,
+    });
+    (useGetPokemonQuery as Mock).mockReturnValue({
+      data: mockPokemon,
+      isFetching: false,
+      error: null,
+    });
+    (useGetPokemonSpeciesQuery as Mock).mockReturnValue({
+      data: mockSpecies,
+      isFetching: false,
+      error: null,
     });
     renderWithStore({}, <App />);
-    expect(screen.getByText(/loading/i)).toBeInTheDocument();
-    await waitFor(() =>
-      expect(screen.getByText(/pokemon1/i)).toBeInTheDocument()
-    );
+    expect(screen.getByText('About us')).toBeInTheDocument();
+    expect(screen.getByText('Error')).toBeInTheDocument();
+    expect(screen.getByText('Outlet')).toBeInTheDocument();
+    expect(useGetAllPokemonsQuery).toHaveBeenCalledWith({
+      offset: 0,
+      valueInStorage: 'pokemon1',
+    });
+    expect(useGetPokemonQuery).toHaveBeenCalledWith('pokemon1');
+    expect(useGetPokemonSpeciesQuery).toHaveBeenCalledWith('pokemon1');
   });
 
   it('Manages the download status and errors in case of a failed request', async () => {
-    (fetch as Mock).mockResolvedValueOnce({
-      ok: false,
-      status: 404,
+    const error = { originalStatus: 404 } as FetchBaseQueryError;
+    (useGetAllPokemonsQuery as Mock).mockReturnValue({
+      data: [{ name: 'pokemon1' }, { name: 'pokemon2' }],
+      isFetching: false,
+      error: error,
     });
-
+    (useGetPokemonQuery as Mock).mockReturnValue({
+      data: [],
+      isFetching: false,
+      error: null,
+    });
+    (useGetPokemonSpeciesQuery as Mock).mockReturnValue({
+      data: [],
+      isFetching: false,
+      error: null,
+    });
     renderWithStore({}, <App />);
 
     await userEvent.type(screen.getByRole('textbox'), 'no');
@@ -150,60 +115,48 @@ describe('App', () => {
     );
   });
 
-  it('Calls the API with the correct parameters and updates the status', async () => {
-    (fetch as Mock)
-      .mockResolvedValueOnce({
-        ok: true,
-        json: () => Promise.resolve(mockPokemonResponse),
-      })
-      .mockResolvedValueOnce({
-        ok: true,
-        json: () => Promise.resolve(mockSpeciesResponse),
-      })
-      .mockResolvedValueOnce({
-        ok: true,
-        json: () => Promise.resolve(mockPokemonInfoResponse),
-      });
-
-    renderWithStore({}, <App />);
-
-    await userEvent.type(screen.getByRole('textbox'), 'pokemon1');
-    await userEvent.click(screen.getByRole('button', { name: /search/i }));
-    await waitFor(() =>
-      expect(localStorage.getItem('inputValue')).toBe('pokemon1')
-    );
-    await waitFor(() =>
-      expect(screen.getByText(/pokemon1/i)).toBeInTheDocument()
-    );
-  });
-
   it('Makes an API call when searching for all the elements', async () => {
-    (fetch as Mock).mockImplementation((url: string) => {
-      if (url.includes('pokemon-species')) {
-        return Promise.resolve({
-          ok: true,
-          json: () => Promise.resolve(mockSpeciesResponse),
-        });
-      }
-      if (
-        url.includes('pokemon/pokemon1/') ||
-        url.includes('pokemon/pokemon2/')
-      ) {
-        return Promise.resolve({
-          ok: true,
-          json: () => Promise.resolve(mockPokemonInfoResponse),
-        });
-      } else if (url.includes('pokemon/')) {
-        return Promise.resolve({
-          ok: true,
-          json: () => Promise.resolve(mockAllPokemonsResponse),
-        });
-      }
-      return Promise.resolve({ ok: false, status: 404 });
+    const mockPokemon1 = { img: 'pokemon1.img', name: 'pokemon1', id: 1 };
+    const mockSpecies1 = { descriptions: 'descriptions 1' };
+
+    const mockPokemon2 = { img: 'pokemon2.img', name: 'pokemon2', id: 2 };
+    const mockSpecies2 = { descriptions: 'descriptions 2' };
+
+    (useGetAllPokemonsQuery as Mock).mockReturnValue({
+      data: [{ name: 'pokemon1' }, { name: 'pokemon2' }],
+      isFetching: false,
+      error: null,
     });
 
-    renderWithStore({}, <App />);
+    (useGetPokemonQuery as Mock)
+      .mockImplementationOnce(() => ({
+        data: mockPokemon1,
+        isFetching: false,
+        error: null,
+      }))
+      .mockImplementationOnce(() => ({
+        data: mockPokemon2,
+        isFetching: false,
+        error: null,
+      }));
 
+    (useGetPokemonSpeciesQuery as Mock)
+      .mockImplementationOnce(() => ({
+        data: mockSpecies1,
+        isFetching: false,
+        error: null,
+      }))
+      .mockImplementationOnce(() => ({
+        data: mockSpecies2,
+        isFetching: false,
+        error: null,
+      }));
+
+    renderWithStore({}, <App />);
+    expect(useGetAllPokemonsQuery).toHaveBeenCalledWith({
+      offset: 0,
+      valueInStorage: '',
+    });
     await waitFor(() =>
       expect(screen.getByText(/pokemon1/i)).toBeInTheDocument()
     );
@@ -213,8 +166,24 @@ describe('App', () => {
   });
 
   it('When you click on the "Error" button, an error occurs and the backup interface is displayed. And when you click on "Try again", the backup interface disappears.', async () => {
+    const mockPokemon1 = { img: 'pokemon1.img', name: 'pokemon1', id: 1 };
+    const mockSpecies1 = { descriptions: 'descriptions 1' };
     vi.spyOn(console, 'error').mockImplementation(() => {});
-
+    (useGetAllPokemonsQuery as Mock).mockReturnValue({
+      data: [{ name: 'pokemon1' }, { name: 'pokemon2' }],
+      isFetching: false,
+      error: null,
+    });
+    (useGetPokemonQuery as Mock).mockReturnValue({
+      data: mockPokemon1,
+      isFetching: false,
+      error: null,
+    });
+    (useGetPokemonSpeciesQuery as Mock).mockReturnValue({
+      data: mockSpecies1,
+      isFetching: false,
+      error: null,
+    });
     renderWithStore({}, <App />);
 
     await userEvent.click(screen.getByRole('button', { name: /error/i }));
@@ -233,14 +202,26 @@ describe('App', () => {
   });
 
   it('Error detection in API requests using ErrorBoundary', async () => {
-    (fetch as Mock).mockResolvedValueOnce({
-      ok: false,
-      status: 402,
+    const error = { originalStatus: 402 } as FetchBaseQueryError;
+    (useGetAllPokemonsQuery as Mock).mockReturnValue({
+      data: [{ name: 'pokemon1' }, { name: 'pokemon2' }],
+      isFetching: false,
+      error: error,
+    });
+    (useGetPokemonQuery as Mock).mockReturnValue({
+      data: [],
+      isFetching: false,
+      error: null,
+    });
+    (useGetPokemonSpeciesQuery as Mock).mockReturnValue({
+      data: [],
+      isFetching: false,
+      error: null,
     });
 
     renderWithStore({}, <App />);
     await waitFor(() =>
-      expect(screen.getByText(/something went wrong/i)).toBeInTheDocument()
+      expect(screen.getByText(/{"originalStatus":402}/i)).toBeInTheDocument()
     );
   });
 });

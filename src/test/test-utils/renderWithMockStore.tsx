@@ -7,6 +7,7 @@ import { render } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import type { ReactNode } from 'react';
 import ErrorBoundary from '../../components/ErrorBoundary/ErrorBoundary';
+import { pokemonApi } from '../../api/api';
 
 interface PreloadedState {
   selectedItems?: {
@@ -30,9 +31,12 @@ export const renderWithStore = (
 ) => {
   const mockedStore = configureStore({
     reducer: {
+      [pokemonApi.reducerPath]: pokemonApi.reducer,
       selectedItems: selectedItemsReducer,
       basicCondition: basicConditionReducer,
     },
+    middleware: (getDefaultMiddleware) =>
+      getDefaultMiddleware().concat(pokemonApi.middleware),
     preloadedState: {
       selectedItems: {
         items: [],

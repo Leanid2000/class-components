@@ -1,0 +1,16 @@
+.errorBlock {
+  display: flex;
+  font-size: 200px;
+  margin: auto;
+  align-items: center;
+  justify-content: center;
+}
+
+.errorButton {
+  border: none;
+  background-color: rgb(46, 204, 40);
+  border-radius: 20px;
+  width: 150px;
+  height: 30px;
+  cursor: pointer;
+}

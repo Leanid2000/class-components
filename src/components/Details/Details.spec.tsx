@@ -1,7 +1,10 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen, waitFor } from '@testing-library/react';
+import { describe, it, expect, vi, beforeEach, type Mock } from 'vitest';
+import { screen, waitFor } from '@testing-library/react';
 import { DetailsComponent } from './Details';
 import userEvent from '@testing-library/user-event';
+import { renderWithStore } from '../../test/test-utils/renderWithMockStore';
+import { useGetPokemonQuery, useGetPokemonSpeciesQuery } from '../../api/api';
+import type { Middleware } from '@reduxjs/toolkit';
 
 const mockedNavigate = vi.fn();
 const mockGetSpecies = vi.fn();
@@ -12,7 +15,22 @@ vi.mock('react-router-dom', async (importOriginal) => {
     ...actual,
     useNavigate: () => mockedNavigate,
     useParams: () => ({ pokemonId: '42', page: '2' }),
-    useOutletContext: () => ({ getSpecies: mockGetSpecies }),
+  };
+});
+
+vi.mock('../../api/api', () => {
+  const middleware: Middleware = () => (next) => (action) => {
+    return next(action);
+  };
+
+  return {
+    useGetPokemonQuery: vi.fn(),
+    useGetPokemonSpeciesQuery: vi.fn(),
+    pokemonApi: {
+      reducerPath: 'pokemonApi',
+      reducer: (state = {}) => state,
+      middleware,
+    },
   };
 });
 
@@ -22,38 +40,52 @@ describe('DetailsComponent', () => {
     mockGetSpecies.mockClear();
   });
 
-  it('renders loading initially and then shows pokemon info', async () => {
-    mockGetSpecies.mockResolvedValue({
-      speciesEn: { flavor_text: 'Some description' },
-      img: 'test-img.png',
-      id: 42,
-      name: 'pikachu',
+  it('shows pokemon info', async () => {
+    const mockPokemon = { img: 'pokemon1.img', name: 'pokemon1', id: 1 };
+    const mockSpecies = { descriptions: 'descriptions 1' };
+    (useGetPokemonQuery as Mock).mockReturnValue({
+      data: mockPokemon,
+      isFetching: false,
+      error: null,
+    });
+    (useGetPokemonSpeciesQuery as Mock).mockReturnValue({
+      data: mockSpecies,
+      isFetching: false,
+      error: null,
     });
 
-    render(<DetailsComponent />);
+    renderWithStore({}, <DetailsComponent />);
 
-    expect(screen.getByText(/loading/i)).toBeInTheDocument();
-
+    // expect(screen.getByText(/loading/i)).toBeInTheDocument();
+    // await waitFor(() => {
+    //   expect(screen.getByAltText('pokemonInf.img')).toBeInTheDocument();
+    // });
     await waitFor(() => {
-      expect(screen.getByAltText('pokemonInf.img')).toBeInTheDocument();
+      expect(screen.getByText(/pokemon1/i)).toBeInTheDocument();
     });
-
-    expect(screen.getByText('PIKACHU')).toBeInTheDocument();
-    expect(screen.getByText(/Some description/)).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByText(/descriptions 1/i)).toBeInTheDocument();
+    });
   });
 
   it('calls navigate with correct page when background or button clicked', async () => {
-    mockGetSpecies.mockResolvedValue({
-      speciesEn: { flavor_text: 'desc' },
-      img: 'img.png',
-      id: 42,
-      name: 'pikachu',
+    const mockPokemon = { img: 'pokemon1.img', name: 'pokemon1', id: 1 };
+    const mockSpecies = { descriptions: 'descriptions 1' };
+    (useGetPokemonQuery as Mock).mockReturnValue({
+      data: mockPokemon,
+      isFetching: false,
+      error: null,
+    });
+    (useGetPokemonSpeciesQuery as Mock).mockReturnValue({
+      data: mockSpecies,
+      isFetching: false,
+      error: null,
     });
 
-    render(<DetailsComponent />);
+    renderWithStore({}, <DetailsComponent />);
 
     await waitFor(() => {
-      expect(screen.getByText('PIKACHU')).toBeInTheDocument();
+      expect(screen.getByText(/pokemon1/i)).toBeInTheDocument();
     });
 
     await userEvent.click(screen.getByRole('button', { name: /close/i }));

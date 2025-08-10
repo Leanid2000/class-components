@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import type { AppDispatch, RootState } from '../../redux/store';
 import { deleteAllSelectedItem } from '../../redux/selectedItemsSlice';
-import './Flyout.css';
+import styles from './Flyout.module.css';
 import { useRef } from 'react';
 
 export const Flyout = () => {
@@ -30,13 +30,15 @@ export const Flyout = () => {
     dispatch(deleteAllSelectedItem());
   };
   return (
-    <div className="flyoutBlock">
-      <a ref={link} className="link"></a>
-      <p className="flyoutText">{`You have selected ${selectedItems.length} Pokemon`}</p>
-      <button onClick={unselectAll} className="flyoutButton">
+    <div className={styles.flyoutBlock}>
+      <a ref={link} className={styles.link}></a>
+      <p
+        className={styles.flyoutText}
+      >{`You have selected ${selectedItems.length} Pokemon`}</p>
+      <button onClick={unselectAll} className={styles.flyoutButton}>
         Unselect all
       </button>
-      <button className="flyoutButton" onClick={download}>
+      <button className={styles.flyoutButton} onClick={download}>
         Download
       </button>
     </div>
