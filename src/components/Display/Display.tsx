@@ -1,33 +1,39 @@
-import { useContext } from 'react';
-import type { Pokemon } from '../../utils/interfaces/pokemonInterfaces';
-import './display.css';
-import { useSelector } from 'react-redux';
-import type { RootState } from '../../redux/store';
-import { ThemeContext } from '../ThemeContext/ThemeContext';
+import type { PokemonName } from '../../utils/interfaces/pokemonInterfaces';
+import styles from './Display.module.css';
 import { Card } from '../Сard/Сard';
 import { Pagination } from '../Pagination/Pagination';
+import type { FetchBaseQueryError } from '@reduxjs/toolkit/query';
+import type { SerializedError } from '@reduxjs/toolkit';
 
-const DisplayComponent = () => {
-  const theme = useContext(ThemeContext);
-  const trueTheme = theme?.theme || 'light';
-  const basicCondition = useSelector(
-    (state: RootState) => state.basicCondition.basicCondition
-  );
-  const isPagination = basicCondition.isAllPokemons && !basicCondition.loading;
+const DisplayComponent = ({
+  data = [{ name: '' }],
+  error,
+  isFetching,
+}: {
+  data: PokemonName[] | undefined;
+  error: FetchBaseQueryError | SerializedError | undefined;
+  isFetching: boolean;
+}) => {
+  const isPagination = data.length > 1;
 
-  if (basicCondition.loading) {
-    return <p className={`${trueTheme}ListLoading`}>loading...</p>;
+  if (isFetching) {
+    return <p className={styles.listLoading}>loading...</p>;
   }
 
-  if (!basicCondition.isFound) {
-    return <p className={`${trueTheme}ListNotFound`}>Pokemon not found</p>;
+  if (error && 'originalStatus' in error) {
+    if (error.originalStatus === 404) {
+      return <p className={styles.listNotFound}>Pokemon not found</p>;
+    } else {
+      console.error('Request error:', error);
+      return <p className={styles.error}>Error: {JSON.stringify(error)}</p>;
+    }
   }
 
   return (
     <>
-      <ul className="list">
-        {basicCondition.pokemons.map((element: Pokemon) => {
-          return <Card key={element.name} element={element} />;
+      <ul className={styles.list}>
+        {data?.map((element: PokemonName, num: number) => {
+          return <Card key={num} element={element.name} />;
         })}
       </ul>
       {isPagination && <Pagination />}

@@ -1,25 +1,48 @@
 import { useNavigate } from 'react-router-dom';
-import type { Pokemon } from '../../utils/interfaces/pokemonInterfaces';
-import { HeartSVG } from '../HeartSVG/HeartSVG';
-import { useContext } from 'react';
-import { ThemeContext } from '../ThemeContext/ThemeContext';
+import {
+  useGetPokemonQuery,
+  useGetPokemonSpeciesQuery,
+} from '../../api/pokemonApi';
+import { CardContent } from './CardContent/CardContent';
+import styles from './Card.module.css';
 
-export const Card = ({ element }: { element: Pokemon }) => {
+export const Card = ({ element }: { element: string }) => {
   const navigate = useNavigate();
-  const theme = useContext(ThemeContext);
-  const trueTheme = theme?.theme || 'light';
+
+  const {
+    data: pokemon,
+    isFetching: isFetchingPokemon,
+    error: errorPokemon,
+  } = useGetPokemonQuery(element);
+  const {
+    data: pokemonSpecies,
+    isFetching: isFetchingSpecies,
+    error: errorSpecies,
+  } = useGetPokemonSpeciesQuery(element);
+
+  const isFetching = isFetchingPokemon || isFetchingSpecies;
+
+  const handleClick = () => {
+    navigate(`${pokemon?.id}`);
+  };
+
+  if (errorPokemon || errorSpecies) {
+    if (errorPokemon) {
+      console.error('Request error:', errorPokemon);
+    }
+    if (errorSpecies) {
+      console.error('Request error:', errorSpecies);
+    }
+    return <p className="error">Error</p>;
+  }
 
   return (
-    <div
-      className={`${trueTheme}ListElement`}
-      onClick={() => navigate(`${element.id}`)}
-    >
-      <img src={element.img} alt={element.name} className="img" />
-      <p className="name">{element.name.toUpperCase()}</p>
-      <p className="descriptions">
-        {element.descriptions || 'There is no description'}
-      </p>
-      <HeartSVG element={element} />
+    <div className={styles.listElement} onClick={handleClick}>
+      <CardContent
+        pokemon={pokemon}
+        pokemonSpecies={pokemonSpecies}
+        isFetching={isFetching}
+      />
     </div>
   );
 };

@@ -1,18 +1,14 @@
-.lightAboutUsComponent,
-.darkAboutUsComponent {
+.aboutUsBlock {
   position: fixed;
   top: 0;
   right: 0;
   left: 0;
   bottom: 0;
-  background-color: #ffff;
+  background-color: var(--background-color);
   display: flex;
   flex-direction: column;
   align-items: center;
-}
-.darkAboutUsComponent {
-  background-color: rgb(46, 43, 43);
-  color: wheat;
+  color: var(--text-color);
 }
 
 .aboutUsText {
@@ -26,4 +22,14 @@
 .linkRSSchool {
   text-decoration: none;
   margin-bottom: 20px;
+  color: var(--text-color);
+}
+
+.goToPokemonButton {
+  border: none;
+  background-color: rgb(46, 204, 40);
+  border-radius: 20px;
+  width: 150px;
+  height: 30px;
+  cursor: pointer;
 }

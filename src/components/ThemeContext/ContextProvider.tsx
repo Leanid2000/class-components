@@ -4,5 +4,9 @@ import { ThemeContext } from './ThemeContext';
 export const ContextProvider = ({ children }: { children: ReactNode }) => {
   const [theme, setTheme] = useState('light');
 
-  return <ThemeContext value={{ theme, setTheme }}>{children}</ThemeContext>;
+  return (
+    <ThemeContext value={{ theme, setTheme }}>
+      <div data-theme={theme}>{children}</div>
+    </ThemeContext>
+  );
 };

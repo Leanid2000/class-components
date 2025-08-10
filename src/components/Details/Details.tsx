@@ -1,69 +1,66 @@
-import { useNavigate, useOutletContext, useParams } from 'react-router-dom';
-import './Details.css';
-import { useContext, useEffect, useState } from 'react';
-import { ThemeContext } from '../ThemeContext/ThemeContext';
-
-interface Species {
-  speciesEn: { flavor_text: string };
-  img: string;
-  id: number;
-  name: string;
-}
+import { useNavigate, useParams } from 'react-router-dom';
+import styles from './Details.module.css';
+import {
+  useGetPokemonQuery,
+  useGetPokemonSpeciesQuery,
+} from '../../api/pokemonApi';
 
 export const DetailsComponent = () => {
-  const [pokemonInf, setPokemonInf] = useState<Species>({
-    speciesEn: { flavor_text: '' },
-    img: '1',
-    id: 1,
-    name: '',
-  });
   const { pokemonId } = useParams<{ pokemonId: string }>();
   const { page } = useParams<{ page: string }>();
-  const theme = useContext(ThemeContext);
-  const trueTheme = theme?.theme || 'light';
-  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const { getSpecies } = useOutletContext<{
-    getSpecies: (value: string) => Promise<Species>;
-  }>();
+
+  const {
+    data: pokemon,
+    isFetching: isFetchingPokemon,
+    error: errorPokemon,
+  } = useGetPokemonQuery(pokemonId || '');
+  const {
+    data: pokemonSpecies,
+    isFetching: isFetchingSpecies,
+    error: errorSpecies,
+  } = useGetPokemonSpeciesQuery(pokemonId || '');
+  const isFetching = isFetchingPokemon || isFetchingSpecies;
+  const pokemonName = pokemon?.name.toUpperCase();
+  const pokemonDescription =
+    pokemonSpecies?.descriptions || 'There is no description';
+  const pokemonImg = pokemon?.img;
 
   const handleClick = () => {
     navigate(`/${page}/`);
   };
-  useEffect(() => {
-    const getPokemonInf = async () => {
-      setLoading(true);
-      const information = await getSpecies(pokemonId || '1');
-      setPokemonInf({ ...information });
-      setLoading(false);
-    };
-    getPokemonInf();
-  }, [pokemonId, getSpecies]);
+
+  if (errorPokemon || errorSpecies) {
+    if (errorPokemon) {
+      console.error('Request error:', errorPokemon);
+    }
+    if (errorSpecies) {
+      console.error('Request error:', errorSpecies);
+    }
+    return <p className="error">Error</p>;
+  }
 
   return (
     <>
-      <div className="background" onClick={handleClick}></div>
-      <div className={`${trueTheme}DetailsComponentBlock`}>
-        {!loading ? (
+      <div className={styles.background} onClick={handleClick}></div>
+      <div className={styles.detailsComponentBlock}>
+        {isFetching ? (
+          <div className={styles.loading}>Loading...</div>
+        ) : (
           <>
             <img
-              src={pokemonInf.img}
-              alt={'pokemonInf.img'}
-              className="imgSelectedPokemon"
+              src={pokemonImg}
+              alt={pokemonName}
+              className={styles.imgSelectedPokemon}
             />
-            <p className="speciesPokemonName">
-              {pokemonInf.name.toUpperCase()}
+            <p className={styles.speciesPokemonName}>{pokemonName}</p>
+            <p className={styles.speciesSelectedPokemon}>
+              {pokemonDescription}
             </p>
-            <p className="speciesSelectedPokemon">
-              {pokemonInf.speciesEn?.flavor_text.replace(/\n|\f/g, ' ') ||
-                'There is no description'}
-            </p>
-            <button onClick={handleClick} className="closeButton">
+            <button onClick={handleClick} className={styles.closeButton}>
               Close
             </button>
           </>
-        ) : (
-          <div className="loading">Loading...</div>
         )}
       </div>
     </>

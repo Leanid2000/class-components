@@ -1,39 +1,20 @@
 import { useContext, useEffect, useRef, useState } from 'react';
 import SearchComponent from './components/Search/Search';
 import DisplayComponent from './components/Display/Display';
-import type { Pokemon } from './utils/interfaces/pokemonInterfaces';
 import ErrorComponent from './components/ErrorBoundary/ErrorComponent/ErrorComponent';
-import './App.css';
+import styles from './App.module.css';
 import { useLocalStorage } from './hooks/useLocalStorage';
 import { Outlet, useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import type { AppDispatch, RootState } from './redux/store';
-import { setBasicCondition } from './redux/basicConditionSlice';
+import { setPokemonState } from './redux/pokemonStateSlice';
 import { Flyout } from './components/Flyout/Flyout';
 import { ThemeContext } from './components/ThemeContext/ThemeContext';
-
-interface PokemonSpecies {
-  flavor_text_entries: PokemonSpeciesText[];
-}
-interface PokemonSpeciesText {
-  flavor_text: string;
-  language: { name: string };
-}
-
-interface PokemonInf {
-  sprites: { front_default: string };
-  id: number;
-  name: string;
-}
-
-interface PokemonsResult {
-  results: Pokemon[];
-  name: string;
-  id: number;
-}
+import { pokemonApi, useGetAllPokemonsQuery } from './api/pokemonApi';
+import { CONSTANTS } from './utils/constants/constants';
 
 const App = () => {
-  const [valueInStorage, setValueInStorage] = useLocalStorage();
+  const [valueInStorage] = useLocalStorage();
   const { page } = useParams<{ page: string }>();
   const navigate = useNavigate();
   const isFirstLayout = useRef(true);
@@ -41,146 +22,53 @@ const App = () => {
   const dispatch = useDispatch<AppDispatch>();
   const theme = useContext(ThemeContext);
   const basicCondition = useSelector(
-    (state: RootState) => state.basicCondition.basicCondition
+    (state: RootState) => state.pokemonState.inputValue
   );
   const selectedItems = useSelector(
     (state: RootState) => state.selectedItems.items
   );
-  const trueTheme = theme?.theme || 'light';
-  const getSpecies = async (value: string) => {
-    const getSpecies = await fetch(
-      `https://pokeapi.co/api/v2/pokemon-species/${value}`
-    );
-    const information = await fetch(
-      `https://pokeapi.co/api/v2/pokemon/${value}/`
-    );
-    if (!getSpecies.ok || !information.ok) {
-      throw new Error(`Error: ${getSpecies.status} ${getSpecies.statusText}`);
-    }
-    const species: PokemonSpecies = await getSpecies.json();
-    const speciesEn = species.flavor_text_entries.find(
-      (element) => element.language.name === 'en'
-    );
-    const fullInformation: PokemonInf = await information.json();
-    const img: string = fullInformation.sprites.front_default;
-
-    if (speciesEn) {
-      return {
-        name: fullInformation.name,
-        speciesEn: speciesEn,
-        img: img,
-        id: fullInformation.id,
-      };
-    }
-  };
-  const processingResult = (
-    result: Pokemon[],
-    isAllPokemons: boolean,
-    localValue?: string
-  ) => {
-    dispatch(
-      setBasicCondition({
-        ...basicCondition,
-        loading: false,
-        pokemons: result,
-        isFound: true,
-        isAllPokemons: isAllPokemons,
-      })
-    );
-    setValueInStorage(localValue || basicCondition.inputValue);
-  };
-  const getResults = async (offset: number, localValue?: string) => {
-    dispatch(
-      setBasicCondition({
-        ...basicCondition,
-        loading: true,
-        pokemons: [],
-        isFound: true,
-      })
-    );
-    try {
-      const getPokemons = await fetch(
-        `https://pokeapi.co/api/v2/pokemon/${localValue || basicCondition.inputValue}?limit=20&offset=${offset * 20}`
-      );
-      if (getPokemons.status === 404) {
-        dispatch(
-          setBasicCondition({
-            ...basicCondition,
-            pokemons: [],
-            isFound: false,
-            loading: false,
-            isAllPokemons: false,
-          })
-        );
-        setValueInStorage(localValue || basicCondition.inputValue);
-        return;
-      }
-      const pokemonsResult: PokemonsResult = await getPokemons.json();
-      if (pokemonsResult.results) {
-        const descriptions: Pokemon[] = await Promise.all(
-          pokemonsResult.results.map(async (pokemon: Pokemon) => {
-            const result = await getSpecies(pokemon.name);
-            return {
-              name: pokemon.name,
-              descriptions:
-                result?.speciesEn?.flavor_text.replace(/\n|\f/g, ' ') || '',
-              img: result?.img || '',
-              id: result?.id || 1,
-            };
-          })
-        );
-        processingResult(descriptions, true);
-      } else {
-        const species = await getSpecies(pokemonsResult.name);
-        if (species) {
-          const descriptions: Pokemon[] = await Promise.all([
-            {
-              name: pokemonsResult.name,
-              descriptions: species.speciesEn.flavor_text.replace(
-                /\n|\f/g,
-                ' '
-              ),
-              img: species?.img || '',
-              id: species.id,
-            },
-          ]);
-          processingResult(descriptions, false, localValue);
-        }
-      }
-    } catch {
-      dispatch(
-        setBasicCondition({
-          ...basicCondition,
-          loading: false,
-          isFound: false,
-          pokemons: [],
-        })
-      );
-      setIsClickError(true);
-    }
-  };
+  const offset = Number(page) - 1;
+  const isItemSelected = selectedItems.length > 0;
+  const {
+    data: allPokemons,
+    isFetching,
+    error,
+  } = useGetAllPokemonsQuery({
+    offset,
+    valueInStorage: basicCondition,
+  });
 
   const setInputValue = (value: string) => {
-    dispatch(setBasicCondition({ ...basicCondition, inputValue: value }));
+    dispatch(setPokemonState(value));
+  };
+
+  const updateСache = () => {
+    dispatch(pokemonApi.util.invalidateTags(['Pokemons']));
   };
 
   const changeTheme = () => {
-    if (theme?.theme === 'light') {
-      theme.setTheme('dark');
+    if (theme?.theme === CONSTANTS.LIGHT_THEME) {
+      theme.setTheme(CONSTANTS.DARK_THEME);
     } else {
-      theme?.setTheme('light');
+      theme?.setTheme(CONSTANTS.LIGHT_THEME);
     }
   };
+
+  const handleNavigateToAboutPage = () => {
+    navigate(`/${page}/about`);
+  };
+
+  const setError = () => {
+    setIsClickError(true);
+  };
+
   useEffect(() => {
     if (isFirstLayout.current) {
       if (!page) {
         navigate(`/1/`);
-        getResults(0, valueInStorage);
       }
+      dispatch(setPokemonState(valueInStorage));
       isFirstLayout.current = false;
-    }
-    if (page) {
-      getResults(Number(page) - 1, valueInStorage);
     }
   }, [page]);
 
@@ -189,36 +77,34 @@ const App = () => {
   }
 
   return (
-    <div
-      className={`${trueTheme}BasicBlock`}
-      style={basicCondition.pokemons.length === 1 ? { height: '100vh' } : {}}
-    >
-      <div className="searchBlockComponent">
-        <SearchComponent
-          setInputValue={setInputValue}
-          getResults={getResults}
-        />
-        <button className={`${trueTheme}ButtonTheme`} onClick={changeTheme}>
+    <div className={styles.basicBlock}>
+      <div>
+        <SearchComponent setInputValue={setInputValue} />
+        <button className={styles.buttonTheme} onClick={changeTheme}>
           Theme
         </button>
         <button
-          className={`${trueTheme}ButtonAboutUs`}
-          onClick={() => navigate(`/${page}/about`)}
+          className={styles.buttonAboutUs}
+          onClick={handleNavigateToAboutPage}
         >
           About us
         </button>
-        <DisplayComponent />
-        <button
-          className={`${trueTheme}ErrorButton`}
-          onClick={() => setIsClickError(true)}
-        >
+        <button className={styles.buttonRefetch} onClick={updateСache}>
+          Refetch
+        </button>
+        <DisplayComponent
+          data={allPokemons}
+          error={error}
+          isFetching={isFetching}
+        />
+        <button className={styles.errorButton} onClick={setError}>
           Error
         </button>
       </div>
       <div>
-        <Outlet context={{ getSpecies }} />
+        <Outlet />
       </div>
-      {selectedItems.length > 0 && <Flyout />}
+      {isItemSelected && <Flyout />}
     </div>
   );
 };

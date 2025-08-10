@@ -3,7 +3,6 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ErrorPage } from './Error';
 
-// Мокаем useNavigate из react-router-dom
 const mockedNavigate = vi.fn();
 
 vi.mock('react-router-dom', async (importOriginal) => {

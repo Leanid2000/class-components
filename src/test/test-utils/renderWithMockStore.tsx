@@ -1,27 +1,21 @@
 import type { Pokemon } from '../../utils/interfaces/pokemonInterfaces';
 import selectedItemsReducer from '../../redux/selectedItemsSlice';
-import basicConditionReducer from '../../redux/basicConditionSlice';
+import pokemonStateReducer from '../../redux/pokemonStateSlice';
 import { configureStore } from '@reduxjs/toolkit';
 import { Provider } from 'react-redux';
 import { render } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import type { ReactNode } from 'react';
 import ErrorBoundary from '../../components/ErrorBoundary/ErrorBoundary';
+import { pokemonApi } from '../../api/pokemonApi';
 
 interface PreloadedState {
   selectedItems?: {
     items?: number[];
     itemsInfo?: Pokemon[];
   };
-  basicCondition?: {
-    basicCondition: {
-      loading?: boolean;
-      isFound?: boolean;
-      pokemons?: Pokemon[];
-      isAllPokemons?: boolean;
-      inputValue?: string;
-      isClickError?: boolean;
-    };
+  pokemonState?: {
+    inputValue?: string;
   };
 }
 export const renderWithStore = (
@@ -30,25 +24,21 @@ export const renderWithStore = (
 ) => {
   const mockedStore = configureStore({
     reducer: {
+      [pokemonApi.reducerPath]: pokemonApi.reducer,
       selectedItems: selectedItemsReducer,
-      basicCondition: basicConditionReducer,
+      pokemonState: pokemonStateReducer,
     },
+    middleware: (getDefaultMiddleware) =>
+      getDefaultMiddleware().concat(pokemonApi.middleware),
     preloadedState: {
       selectedItems: {
         items: [],
         itemsInfo: [],
         ...preloadedState.selectedItems,
       },
-      basicCondition: {
-        basicCondition: {
-          loading: false,
-          isFound: true,
-          pokemons: [],
-          isAllPokemons: true,
-          inputValue: '',
-          isClickError: false,
-          ...preloadedState.basicCondition?.basicCondition,
-        },
+      pokemonState: {
+        inputValue: '',
+        ...preloadedState.pokemonState,
       },
     },
   });
