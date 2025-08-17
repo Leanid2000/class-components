@@ -1,8 +1,0 @@
-.listElement {
-  width: 200px;
-  height: 280px;
-  border: 1px solid;
-  border-radius: 10px;
-  cursor: pointer;
-  color: var(--text-color);
-}

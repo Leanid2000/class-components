@@ -36,6 +36,7 @@ export default tseslint.config(
       ...react.configs.recommended.rules,
       ...react.configs['jsx-runtime'].rules,
       'no-console': ['error', { allow: ['warn', 'error', 'info'] }],
+       'react/display-name': 'off',
     },
     settings: {
       react: {

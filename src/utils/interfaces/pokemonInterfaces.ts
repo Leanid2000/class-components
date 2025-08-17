@@ -32,3 +32,10 @@ export interface PokemonName {
 export interface PokemonDescription {
   descriptions: string;
 }
+
+export type SetItem = (
+  event: React.MouseEvent<SVGSVGElement>,
+  isSelected: boolean,
+  id: number,
+  information: Pokemon
+) => void;
