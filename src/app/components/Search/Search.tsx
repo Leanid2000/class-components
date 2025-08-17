@@ -1,11 +1,5 @@
 'use client';
-import {
-  memo,
-  useCallback,
-  useEffect,
-  useState,
-  type ChangeEvent,
-} from 'react';
+import { memo, useEffect, useState, type ChangeEvent } from 'react';
 import { useLocalStorage } from '../../../hooks/useLocalStorage';
 
 import styles from './Search.module.css';
@@ -17,13 +11,13 @@ const SearchComponent = memo(({ query }: { query: string }) => {
   const [valueInStorage, setValueInStorage] = useLocalStorage('');
   const [stateInput, setStateInput] = useState('');
   const pathname = usePathname();
-  const { replace } = useRouter();
+
   const router = useRouter();
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setStateInput(event.target.value);
   };
 
-  const handleClick = useCallback(() => {
+  const handleClick = () => {
     const value = stateInput.trim();
     const params = new URLSearchParams();
     if (value) {
@@ -33,12 +27,13 @@ const SearchComponent = memo(({ query }: { query: string }) => {
     if (search !== value) {
       router.push(newUrl);
     }
-  }, [stateInput, setValueInStorage, replace, pathname, router, search]);
+  };
   useEffect(() => {
     if (valueInStorage !== stateInput) {
       setStateInput(valueInStorage);
     }
     setStateInput(query);
+    setValueInStorage(query);
   }, [valueInStorage, search, query, stateInput]);
 
   return (
