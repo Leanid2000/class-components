@@ -2,7 +2,6 @@
 import { useEffect } from 'react';
 import styles from './Error.module.css';
 import { useRouter } from 'next/navigation';
-// import { useRouter } from 'next/router';
 
 export default function Error({
   error,
@@ -11,8 +10,6 @@ export default function Error({
   error: Error & { digest?: string };
   reset: () => void;
 }) {
-  // const searchParams = useSearchParams();
-  // console.log(searchParams)
   useEffect(() => {
     console.error(error);
   }, [error]);

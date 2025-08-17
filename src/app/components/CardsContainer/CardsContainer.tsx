@@ -23,7 +23,6 @@ export const CardsContainer = ({
   const isSelected = useSelector((state: RootState) =>
     state.selectedItems.items.includes(pokemonSpecies.id)
   );
-  // const isSelected = useSelector(makeIsItemSelectedSelector(pokemonSpecies.id))
   const setItem = (
     event: React.MouseEvent<SVGSVGElement>,
     isSelected: boolean,
@@ -38,13 +37,11 @@ export const CardsContainer = ({
     }
   };
 
-  //   const isSelected = selectedItems.includes(pokemonSpecies.id)
   const cardClick = () => {
     const params = new URLSearchParams(searchParams || '');
     params.set('pokemonId', pokemonSpecies.name);
     const newUrl = `${pathname}?${params.toString()}`;
     router.push(newUrl);
-    // router.replace(newUrl)
   };
 
   return (

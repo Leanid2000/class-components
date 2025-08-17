@@ -13,13 +13,10 @@ export const ButtonContainer = ({
   locale: string;
   page: string;
 }) => {
-  //  const t = useTranslations('HomePage');
   const theme = useContext(ThemeContext);
   const router = useRouter();
-  //   const router = useRouter();
   const pathname = usePathname();
   const href = `${pathname}/about`;
-  //   const fullUrl = query ? `${pathname}?${searchParams}/about` : `${pathname}/about`;
   const changingTheme = () => {
     if (theme?.theme === CONSTANTS.LIGHT_THEME) {
       theme.setTheme(CONSTANTS.DARK_THEME);

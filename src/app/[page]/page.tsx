@@ -18,14 +18,12 @@ export default async function Page({
   const query = await searchParams;
   const trueQuery = query?.query || '';
   const clickPokemonId = query?.pokemonId || '';
-  //   const {trueLocale} = await params
 
   return (
     <div className={styles.basicBlock}>
       <div>
         <SearchComponent query={trueQuery} />
         <ButtonContainer locale={locale} page={page} />
-        {/* <Link href={`1/about`}>about</Link> */}
         <Suspense fallback={<div>Loading...</div>}>
           <DisplayContainer page={page} query={trueQuery} />
         </Suspense>
@@ -42,7 +40,3 @@ export default async function Page({
     </div>
   );
 }
-
-// export default async function Page(){
-//     return<></>
-// }

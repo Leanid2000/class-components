@@ -16,7 +16,7 @@ export const DetailsContainer = async ({
       <div className={styles.background}></div>
       <div className={styles.detailsComponentBlock}>
         <Suspense fallback={<div>Loading...</div>}>
-          <Details details={details} page={page} id={id} />
+          <Details details={details} page={page} />
         </Suspense>
       </div>
     </>

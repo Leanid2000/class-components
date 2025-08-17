@@ -10,12 +10,9 @@ export const Details = ({
   page: string;
 }) => {
   const router = useRouter();
-  //  const pathname = usePathname();
-
   const pokemonName = details.name.toUpperCase();
   const pokemonDescription = details.descriptions || 'There is no description';
   const pokemonImg = details.img;
-  // console.log('pathname',pathname)
   const handleClick = () => {
     router.push(`/${page}/`);
   };

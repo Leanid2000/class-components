@@ -11,11 +11,8 @@ const DisplayContainer = async ({
   page: string;
   query: string;
 }) => {
-  //   const t = useTranslations('HomePage');
-  //   console.log('7777777', query);
   const truePage = Number(page) - 1;
   const allPokemons = await fetchAllPokemon(truePage, query);
-  //   console.log(allPokemons);
   if (allPokemons === 'Not found') {
     return <p className={styles.listNotFound}>Pokemon not found</p>;
   }

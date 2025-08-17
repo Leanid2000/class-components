@@ -9,20 +9,13 @@ export const PaginationElement = ({
   handleClick: (page: number) => void;
   urlPage: string;
 }) => {
-  //   const { page: currentPage } = useParams<{ page: string }>();
   const truePage = page + 1;
   const style =
     Number(urlPage) === truePage
       ? styles.onClickPaginationElement
       : styles.paginationElement;
   return (
-    <div
-      className={style}
-      onClick={() => handleClick(page)}
-      //   style={{
-      //     backgroundColor: color,
-      //   }}
-    >
+    <div className={style} onClick={() => handleClick(page)}>
       {truePage}
     </div>
   );
