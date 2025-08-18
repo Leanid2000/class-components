@@ -24,6 +24,7 @@ export const fetchAllPokemon = unstable_cache(
         PokemonsResult,
         AxiosResponse<PokemonsResult, unknown>
       >(`/pokemon/${query}?limit=20&offset=${page * 20}`);
+      console.log(allPokemon);
       if (allPokemon.data.results) {
         return allPokemon.data.results;
       }
