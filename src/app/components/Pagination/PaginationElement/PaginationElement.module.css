@@ -1,0 +1,15 @@
+.paginationElement,
+.onClickPaginationElement {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 1px solid rgb(47, 194, 10);
+  cursor: pointer;
+  background-color: #eee;
+}
+.onClickPaginationElement {
+  background-color: #4caf50;
+}

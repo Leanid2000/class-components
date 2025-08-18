@@ -1,0 +1,10 @@
+{
+  "HomePage": {
+    "about": "О нас",
+    "language": "Язык",
+    "theme": "Тема",
+    "error": "Ошибка",
+    "search": "Поиск",
+    "notfound": "Покемон не найден"
+  }
+}

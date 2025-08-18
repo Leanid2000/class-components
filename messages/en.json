@@ -1,0 +1,10 @@
+{
+  "HomePage": {
+    "about": "About Us",
+    "language": "Language",
+    "theme": "Theme",
+    "error": "Error",
+    "search": "Search",
+    "notfound": "Pokemon not found"
+  }
+}

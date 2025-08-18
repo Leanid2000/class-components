@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">83.33% </span>
+                <span class="strong">83.92% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>45/54</span>
+                <span class='fraction'>47/56</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">83.33% </span>
+                <span class="strong">83.92% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>45/54</span>
+                <span class='fraction'>47/56</span>
             </div>
         
             
@@ -130,7 +130,8 @@
 <a name='L65'></a><a href='#L65'>65</a>
 <a name='L66'></a><a href='#L66'>66</a>
 <a name='L67'></a><a href='#L67'>67</a>
-<a name='L68'></a><a href='#L68'>68</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L68'></a><a href='#L68'>68</a>
+<a name='L69'></a><a href='#L69'>69</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -152,7 +153,10 @@
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
@@ -174,24 +178,22 @@
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
@@ -219,8 +221,11 @@ export const DetailsComponent = () =&gt; {
     isFetching: isFetchingSpecies,
     error: errorSpecies,
   } = useGetPokemonSpeciesQuery(<span class="branch-0 cbranch-no" title="branch not covered" >pokemonId || '')</span>;
-&nbsp;
   const isFetching = isFetchingPokemon || isFetchingSpecies;
+  const pokemonName = pokemon?.name.toUpperCase();
+  const pokemonDescription =
+    pokemonSpecies?.<span class="branch-0 cbranch-no" title="branch not covered" >descriptions || 'There is no description';</span>
+  const pokemonImg = pokemon?.img;
 &nbsp;
   const handleClick = () =&gt; {
     navigate(`/${page}/`);
@@ -240,25 +245,23 @@ export const DetailsComponent = () =&gt; {
     &lt;&gt;
       &lt;div className={styles.background} onClick={handleClick}&gt;&lt;/div&gt;
       &lt;div className={styles.detailsComponentBlock}&gt;
-        {!isFetching ? (
+        {<span class="branch-0 cbranch-no" title="branch not covered" >isFetching ? (</span>
+<span class="cstat-no" title="statement not covered" >          &lt;div className={styles.loading}&gt;Loading...&lt;/div&gt;</span>
+        ) : (
           &lt;&gt;
             &lt;img
-              src={pokemon?.img}
-              alt={'pokemonInf.img'}
+              src={pokemonImg}
+              alt={pokemonName}
               className={styles.imgSelectedPokemon}
             /&gt;
-            &lt;p className={styles.speciesPokemonName}&gt;
-              {pokemon?.name.toUpperCase()}
-            &lt;/p&gt;
+            &lt;p className={styles.speciesPokemonName}&gt;{pokemonName}&lt;/p&gt;
             &lt;p className={styles.speciesSelectedPokemon}&gt;
-              {pokemonSpecies?.<span class="branch-0 cbranch-no" title="branch not covered" >descriptions || 'There is no description'}</span>
+              {pokemonDescription}
             &lt;/p&gt;
             &lt;button onClick={handleClick} className={styles.closeButton}&gt;
               Close
             &lt;/button&gt;
-<span class="branch-0 cbranch-no" title="branch not covered" >          &lt;/&gt;</span>
-        ) : (
-<span class="cstat-no" title="statement not covered" >          &lt;div className={styles.loading}&gt;Loading...&lt;/div&gt;</span>
+          &lt;/&gt;
         )}
       &lt;/div&gt;
     &lt;/&gt;
@@ -271,7 +274,7 @@ export const DetailsComponent = () =&gt; {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-08-10T23:24:20.432Z
+                at 2025-08-11T13:01:50.625Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>
