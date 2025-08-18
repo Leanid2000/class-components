@@ -1,7 +1,7 @@
 import { Suspense } from 'react';
 import { Details } from '../Details/Details';
 import styles from './Details.module.css';
-import { fetchPokemonSpecies } from '../../[locale]/api/pokemonApi';
+import { fetchPokemonSpecies } from '../../api/pokemonApi';
 
 export const DetailsContainer = async ({
   id,

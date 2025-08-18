@@ -35,7 +35,7 @@ const SearchComponent = memo(({ query }: { query: string }) => {
     }
     setStateInput(query);
     setValueInStorage(query);
-  }, [valueInStorage, search, query, stateInput]);
+  }, [valueInStorage, search, query, stateInput, setValueInStorage]);
 
   return (
     <div className={styles.searchBlock}>
