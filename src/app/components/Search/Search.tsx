@@ -4,6 +4,7 @@ import { useLocalStorage } from '../../../hooks/useLocalStorage';
 
 import styles from './Search.module.css';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 
 const SearchComponent = memo(({ query }: { query: string }) => {
   const searchParams = useSearchParams();
@@ -11,7 +12,7 @@ const SearchComponent = memo(({ query }: { query: string }) => {
   const [valueInStorage, setValueInStorage] = useLocalStorage('');
   const [stateInput, setStateInput] = useState('');
   const pathname = usePathname();
-
+  const t = useTranslations('HomePage');
   const router = useRouter();
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setStateInput(event.target.value);
@@ -45,7 +46,7 @@ const SearchComponent = memo(({ query }: { query: string }) => {
         onChange={handleChange}
       />
       <button className={styles.searchButton} onClick={handleClick}>
-        search
+        {t('search')}
       </button>
     </div>
   );

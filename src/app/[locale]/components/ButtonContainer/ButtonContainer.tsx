@@ -1,11 +1,10 @@
 'use client';
 import { startTransition, useContext } from 'react';
-import { CONSTANTS } from '../../../utils/constants/constants';
+import { CONSTANTS } from '../../../../utils/constants/constants';
 import styles from './ButtonContainer.module.css';
 import { usePathname, useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { ThemeContext } from '../ThemeContext/ThemeContext';
-import { useTranslations } from 'next-intl';
+import { ThemeContext } from '../../../components/ThemeContext/ThemeContext';
 
 export const ButtonContainer = ({
   locale,
@@ -14,7 +13,6 @@ export const ButtonContainer = ({
   locale: string;
   page: string;
 }) => {
-  const t = useTranslations('HomePage');
   const theme = useContext(ThemeContext);
   const router = useRouter();
   const pathname = usePathname();
@@ -43,16 +41,16 @@ export const ButtonContainer = ({
   return (
     <>
       <button className={styles.buttonTheme} onClick={changingTheme}>
-        {t('theme')}
+        {'theme'}
       </button>
       <Link href={`${href}`} className={styles.buttonAboutUs}>
-        {t('about')}
+        {'about'}
       </Link>
       <button className={styles.buttonTheme} onClick={handleClickError}>
-        {t('error')}
+        {'error'}
       </button>
       <button className={styles.buttonTheme} onClick={changingLocale}>
-        {t('language')}
+        {'language'}
       </button>
     </>
   );

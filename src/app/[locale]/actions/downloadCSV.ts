@@ -1,4 +1,4 @@
-import { Pokemon } from '../../utils/interfaces/pokemonInterfaces';
+import { Pokemon } from '../../../utils/interfaces/pokemonInterfaces';
 
 export async function downloadCSV(information: Pokemon[]) {
   const csvHeader = 'id,name,descriptions,img\n';

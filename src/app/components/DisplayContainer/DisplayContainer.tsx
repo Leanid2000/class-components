@@ -1,8 +1,7 @@
 import styles from './DisplayContainer.module.css';
 
-import { fetchAllPokemon } from '../../api/pokemonApi';
-
 import { Display } from '../Display/Display';
+import { fetchAllPokemon } from '../../[locale]/api/pokemonApi';
 
 const DisplayContainer = async ({
   page,

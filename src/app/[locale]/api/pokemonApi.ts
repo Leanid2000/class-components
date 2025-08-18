@@ -1,10 +1,10 @@
 import axios, { AxiosResponse } from 'axios';
-import { CONSTANTS } from '../../utils/constants/constants';
+import { CONSTANTS } from '../../../utils/constants/constants';
 import {
   PokemonInf,
   PokemonSpecies,
   PokemonsResult,
-} from '../../utils/interfaces/pokemonInterfaces';
+} from '../../../utils/interfaces/pokemonInterfaces';
 import { unstable_cache } from 'next/cache';
 
 export interface Error {

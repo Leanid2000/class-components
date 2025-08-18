@@ -1,4 +1,4 @@
-import { fetchPokemonSpecies } from '../../api/pokemonApi';
+import { fetchPokemonSpecies } from '../../[locale]/api/pokemonApi';
 import { CardsContainer } from '../CardsContainer/CardsContainer';
 
 export const FetchCardContainer = async ({ name }: { name: string }) => {

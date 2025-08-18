@@ -1,11 +1,11 @@
-import SearchComponent from '../components/Search/Search';
+import SearchComponent from '../../components/Search/Search';
 import styles from './App.module.css';
 import { Suspense } from 'react';
-import { Pagination } from '../components/Pagination/Pagination';
-import { Flyout } from '../components/Flyout/Flyout';
-import DisplayContainer from '../components/DisplayContainer/DisplayContainer';
-import { DetailsContainer } from '../components/DetailsContainer/DetailsContainer';
-import { ButtonContainer } from '../components/ButtonContainer/ButtonContainer';
+import { Pagination } from '../../components/Pagination/Pagination';
+import { Flyout } from '../../components/Flyout/Flyout';
+import DisplayContainer from '../../components/DisplayContainer/DisplayContainer';
+import { DetailsContainer } from '../../components/DetailsContainer/DetailsContainer';
+import { ButtonContainer } from '../../components/ButtonContainer/ButtonContainer';
 
 export default async function Page({
   params,

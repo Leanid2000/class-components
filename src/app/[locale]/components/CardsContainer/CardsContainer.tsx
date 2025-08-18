@@ -1,16 +1,13 @@
 'use client';
 import { useDispatch, useSelector } from 'react-redux';
-
-import { Pokemon } from '../../../utils/interfaces/pokemonInterfaces';
-
-import { Card } from '../Сard/Сard';
-import { AppDispatch, RootState } from '../../../redux/store';
-
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import {
   deleteSelectedItem,
   setSelectedItem,
-} from '../../../redux/selectedItemsSlice';
+} from '../../../../redux/selectedItemsSlice';
+import { Pokemon } from '../../../../utils/interfaces/pokemonInterfaces';
+import { Card } from '../../../components/Сard/Сard';
+import { AppDispatch, RootState } from '../../../../redux/store';
 
 export const CardsContainer = ({
   pokemonSpecies,

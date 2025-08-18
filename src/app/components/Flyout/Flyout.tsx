@@ -4,7 +4,7 @@ import type { AppDispatch, RootState } from '../../../redux/store';
 import { deleteAllSelectedItem } from '../../../redux/selectedItemsSlice';
 import styles from './Flyout.module.css';
 import { useRef } from 'react';
-import { downloadCSV } from '../../actions/downloadCSV';
+import { downloadCSV } from '../../[locale]/actions/downloadCSV';
 
 export const Flyout = () => {
   const link = useRef<HTMLAnchorElement>(null);
