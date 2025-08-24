@@ -1,11 +1,9 @@
 import { configureStore } from '@reduxjs/toolkit';
-import selectedItemsReducer from './selectedItemsSlice';
-import pokemonStateReducer from './pokemonStateSlice';
+import formReducer from './formSlice';
 
 const store = configureStore({
   reducer: {
-    selectedItems: selectedItemsReducer,
-    pokemonState: pokemonStateReducer,
+    form: formReducer,
   },
 });
 

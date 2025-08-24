@@ -1,10 +1,11 @@
 /// <reference types="vitest"/>
 import { defineConfig } from 'vitest/config';
 import react from '@vitejs/plugin-react';
+import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
   base: '/',
-  plugins: [react()],
+  plugins: [react(), tailwindcss()],
   test: {
     globals: true,
     environment: 'jsdom',
@@ -19,9 +20,10 @@ export default defineConfig({
         'src/main.{js,jsx,ts,tsx}',
         'src/setupTests.{js,ts}',
         'src/**/*.d.ts',
-        'src/utils/interfaces/pokemonInterfaces.ts',
+        'src/interfaces/interfaces.ts',
         'src/routers/AppRouter.tsx',
         'src/redux/store.ts',
+        'src/constants/constants.ts',
       ],
       thresholds: {
         lines: 50,
@@ -32,7 +34,7 @@ export default defineConfig({
     },
   },
   server: {
-    port: 3100,
+    port: 3000,
   },
   build: {
     outDir: 'dist',
