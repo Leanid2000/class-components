@@ -1,6 +1,7 @@
 import type { UseFormRegister } from 'react-hook-form';
 import type { Form } from '../schemes/form';
 import type { Id } from '../interfaces/interfaces';
+import { INPUT } from '../constants/constants';
 
 export const Input = ({
   id,
@@ -17,6 +18,9 @@ export const Input = ({
   type?: string;
   focus?: boolean;
 }) => {
+  const changeRegister = register ? register(id) : {};
+  const changeFocus = focus ? { autoFocus: true } : {};
+
   return (
     <div className="h-20 w-100">
       <label htmlFor={id} className="block h-1">
@@ -25,11 +29,11 @@ export const Input = ({
       <br />
       <input
         id={id}
-        type={type || 'text'}
-        {...(register ? register(id) : {})}
+        type={type || INPUT.TYPE_text}
+        {...changeRegister}
         name={id}
         className="border-2 w-100 -mt-1 rounded-md h-6 px-1"
-        {...(focus ? { autoFocus: true } : {})}
+        {...changeFocus}
       />
       {errorMassage && (
         <p className="text-red-600 w-130 text-xs">{errorMassage}</p>

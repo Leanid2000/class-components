@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import { Modal } from './components/Modal';
 import { HookForm } from './components/HookForm';
-import './App.css';
 import { Display } from './components/Display';
 import type { AppDispatch, RootState } from './redux/store';
 import { useDispatch, useSelector } from 'react-redux';
 import { UncontrolledForm } from './components/UncontrolledForm';
 import type { Form } from './schemes/form';
 import { setHookformData, setUncontrolledData } from './redux/formSlice';
+import { FORM } from './constants/constants';
 
 const App = () => {
   const [isOpenUncontrolledForm, setIsOpenUncontrolledForm] = useState(false);
@@ -74,10 +74,10 @@ const App = () => {
         <HookForm setFormInStore={setFormInStore} countries={countries} />
       </Modal>
       <div className="flex gap-4 items-center justify-center flex-wrap">
-        <Display data={hookformInformation} formName={'Hook Form'} />
+        <Display data={hookformInformation} formName={FORM.HookForm} />
         <Display
           data={uncontrolledFormInformation}
-          formName={'Uncontrolled Form'}
+          formName={FORM.Uncontrolled}
         />
       </div>
     </>

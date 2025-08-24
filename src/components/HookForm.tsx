@@ -6,7 +6,7 @@ import { Select } from './Select';
 import { Checkbox } from './Checkbox';
 import { Datalist } from './Datalist';
 import { ImageInput } from './ImageInput';
-import { LABEL } from '../constants/constants';
+import { FORM, LABEL } from '../constants/constants';
 
 export const HookForm = ({
   setFormInStore,
@@ -25,6 +25,10 @@ export const HookForm = ({
     resolver: zodResolver(form),
     mode: 'onChange',
   });
+
+  const validStyle = isValid
+    ? 'bg-blue-600 text-white hover:bg-blue-700'
+    : 'bg-gray-400 text-gray-700 cursor-not-allowed';
 
   const onSubmit = (data: Form) => {
     setFormInStore(data, true);
@@ -76,7 +80,7 @@ export const HookForm = ({
         />
         <Select
           id="gender"
-          options={['Male', 'Female', 'Dragon King']}
+          options={FORM.GENDER_NAME}
           label={LABEL.GENDER}
           register={register}
         />
@@ -101,8 +105,7 @@ export const HookForm = ({
         />
         <button
           type="submit"
-          className={`w-60 h-10 rounded-md cursor-pointer 
-    ${isValid ? 'bg-blue-600 text-white hover:bg-blue-700' : 'bg-gray-400 text-gray-700 cursor-not-allowed'}`}
+          className={`w-60 h-10 rounded-md cursor-pointer ${validStyle}`}
           disabled={!isValid}
         >
           Submit

@@ -1,3 +1,4 @@
+import { INPUT } from '../constants/constants';
 import type { Id } from '../interfaces/interfaces';
 
 export const ImageInput = ({
@@ -18,14 +19,14 @@ export const ImageInput = ({
       </label>
       <br />
       <input
-        id="file-upload"
-        type="file"
+        id={INPUT.FILE_UPLOAD}
+        type={INPUT.TYPE_file}
         onChange={onFileChange}
         name={id}
         className="hidden"
       />
       <label
-        htmlFor="file-upload"
+        htmlFor={INPUT.FILE_UPLOAD}
         className="cursor-pointer inline-block px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
       >
         Select a file

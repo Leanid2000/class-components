@@ -15,6 +15,7 @@ export const Datalist = ({
   countries: string[];
   register?: UseFormRegister<Form>;
 }) => {
+  const changeRegister = register ? register(id) : {};
   return (
     <div className="h-20 w-100">
       <label htmlFor={label} className="block h-2">
@@ -23,7 +24,7 @@ export const Datalist = ({
       <br />
       <input
         list={id}
-        {...(register ? register(id) : {})}
+        {...changeRegister}
         name={id}
         id={label}
         className="border-2 rounded-md h-6 w-50 -mt-1"

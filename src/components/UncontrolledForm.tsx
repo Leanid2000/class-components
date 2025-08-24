@@ -4,19 +4,9 @@ import { Select } from './Select';
 import { Checkbox } from './Checkbox';
 import { Datalist } from './Datalist';
 import { ImageInput } from './ImageInput';
-import { LABEL } from '../constants/constants';
+import { FORM, FORM_ID, LABEL } from '../constants/constants';
 import { useRef, useState, type FormEvent } from 'react';
-interface Error {
-  message: string;
-  path: string[];
-}
-interface Errors {
-  issues: Error[];
-}
-
-interface ValidationErrors {
-  [key: string]: string;
-}
+import type { Errors, ValidationErrors } from '../interfaces/interfaces';
 
 export const UncontrolledForm = ({
   setFormInStore,
@@ -33,15 +23,15 @@ export const UncontrolledForm = ({
     if (!formRef.current) return;
     const formData = new FormData(formRef.current);
     const data = {
-      name: formData.get('name'),
-      age: formData.get('age'),
-      email: formData.get('email'),
-      password: formData.get('password'),
-      passwordRepeat: formData.get('passwordRepeat'),
-      gender: formData.get('gender'),
-      checked: formData.get('checked') === 'on',
-      country: formData.get('country'),
-      image: formData.get('image'),
+      name: formData.get(FORM_ID.NAME),
+      age: formData.get(FORM_ID.AGE),
+      email: formData.get(FORM_ID.EMAIL),
+      password: formData.get(FORM_ID.PASSWORD),
+      passwordRepeat: formData.get(FORM_ID.PASSWORDRepeat),
+      gender: formData.get(FORM_ID.GENDER),
+      checked: !!formData.get(FORM_ID.CHECKED),
+      country: formData.get(FORM_ID.COUNTRY),
+      image: formData.get(FORM_ID.IMAGE),
     };
     try {
       const dataStore = form.parse(data);
@@ -82,11 +72,7 @@ export const UncontrolledForm = ({
           errorMassage={errors.passwordRepeat}
           label={LABEL.PASSWORDRepeat}
         />
-        <Select
-          id="gender"
-          options={['Male', 'Female', 'Dragon King']}
-          label={LABEL.GENDER}
-        />
+        <Select id="gender" options={FORM.GENDER_NAME} label={LABEL.GENDER} />
         <Datalist
           id="country"
           errorMassage={errors.country}

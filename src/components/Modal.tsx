@@ -1,5 +1,6 @@
 import { useEffect, type ReactNode } from 'react';
 import { createPortal } from 'react-dom';
+import { EVENT } from '../constants/constants';
 
 const container = document.getElementById('modal');
 
@@ -18,7 +19,7 @@ export const Modal = ({
 }) => {
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
-      if (event.key === 'Escape') {
+      if (event.key === EVENT.KEY_Escape) {
         close();
       }
     }

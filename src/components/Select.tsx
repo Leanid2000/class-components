@@ -13,6 +13,7 @@ export const Select = ({
   options: string[];
   register?: UseFormRegister<Form>;
 }) => {
+  const changeRegister = register ? register(id) : {};
   return (
     <div className="h-20 w-100">
       <label htmlFor={id} className="block h-2">
@@ -21,7 +22,7 @@ export const Select = ({
       <br />
       <select
         id={id}
-        {...(register ? register(id) : {})}
+        {...changeRegister}
         name={id}
         className="border-2 rounded-md h-6 w-50"
       >

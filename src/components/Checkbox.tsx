@@ -13,12 +13,13 @@ export const Checkbox = ({
   label: string;
   register?: UseFormRegister<Form>;
 }) => {
+  const changeRegister = register ? register(id) : {};
   return (
     <div className="h-20 w-100">
       <label htmlFor={id} className="flex items-center ">
         <input
           type="checkbox"
-          {...(register ? register(id) : {})}
+          {...changeRegister}
           name={id}
           id={id}
           className="w-5 h-5"
