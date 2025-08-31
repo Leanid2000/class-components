@@ -1,39 +1,30 @@
-export const LABEL = {
-  NAME: 'Name',
-  AGE: 'Age',
-  EMAIL: 'Email',
-  PASSWORD: 'Password',
-  PASSWORDRepeat: 'Repeat the password',
-  GENDER: 'Gender',
-  CHECKED: 'Accept the terms of the agreement',
-  COUNTRY: 'Country',
-  IMAGE: 'Image',
+import { type Parameters } from '../interfaces/interfaces';
+
+export const NAME = {
+  URL_JSON: '/owid-co2-data.json',
+  NOTFOUND: 'N/A',
 };
 
-export const FORM = {
-  HookForm: 'Hook Form',
-  Uncontrolled: 'Uncontrolled Form',
-  GENDER_NAME: ['Male', 'Female', 'Dragon King'],
+export const SORT = {
+  populationUp: 'population ▲',
+  populationDown: 'population ▼',
+  population: 'population',
+  nameUp: 'name ▲',
+  nameDown: 'name ▼',
+  name: 'name',
+  upSymbol: '▲',
+  downSymbol: '▼',
 };
 
-export const FORM_ID = {
-  NAME: 'name',
-  AGE: 'age',
-  EMAIL: 'email',
-  PASSWORD: 'password',
-  PASSWORDRepeat: 'passwordRepeat',
-  GENDER: 'gender',
-  CHECKED: 'checked',
-  COUNTRY: 'country',
-  IMAGE: 'image',
-};
+export const TableParameters = [
+  { parameter: 'year' },
+  { parameter: 'population' },
+  { parameter: 'co2' },
+  { parameter: 'co2_per_capita' },
+];
 
-export const INPUT = {
-  TYPE_file: 'file',
-  TYPE_text: 'text',
-  FILE_UPLOAD: 'file-upload',
-};
-
-export const EVENT = {
-  KEY_Escape: 'Escape',
-};
+export const additionalColumns: Parameters[] = [
+  { parameter: 'methane' },
+  { parameter: 'oil_co2' },
+  { parameter: 'temperature_change_from_co2' },
+];
