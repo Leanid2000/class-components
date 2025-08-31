@@ -20,10 +20,3 @@ type DataInf = {
 export type Response = {
   [key: string]: DataInf;
 };
-
-export type SortParam =
-  | 'name ▲'
-  | 'name ▼'
-  | 'name'
-  | 'population ▲'
-  | 'population ▼';

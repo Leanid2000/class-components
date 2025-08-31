@@ -8,27 +8,21 @@ import {
   type ChangeEvent,
 } from 'react';
 import { type Parameters, type Response } from './interfaces/interfaces';
-import { ColumnSelection } from './components/ColumnSelection';
-import { YearSelector } from './components/YearSelector';
-import { SortSelector } from './components/SortSelector';
-import { SearchInput } from './components/SearchInput ';
+import { ColumnSelection } from './components/ColumnSelection/ColumnSelection';
+import { YearSelector } from './components/YearSelector/YearSelector';
+import { SortSelector } from './components/SortSelector/SortSelector';
+import { SearchInput } from './components/SearchInput/SearchInput ';
+import { NAME, SORT, TableParameters } from './constants/constants';
 
-const List = lazy(() => import('./components/List'));
-
-const tableParameters: Parameters[] = [
-  { parameter: 'year' },
-  { parameter: 'population' },
-  { parameter: 'co2' },
-  { parameter: 'co2_per_capita' },
-];
+const List = lazy(() => import('./components/List/List'));
 
 const App = () => {
   const [data, setData] = useState<Response | null>(null);
   const [checkedParams, setCheckedParams] =
-    useState<Parameters[]>(tableParameters);
+    useState<Parameters[]>(TableParameters);
   const [year, setYear] = useState<number>(2);
-  const [sortName, setSortName] = useState<string>('name ▲');
-  const [sortPopulation, setSortPopulation] = useState<string>('population');
+  const [sortName, setSortName] = useState<string>(SORT.nameUp);
+  const [sortPopulation, setSortPopulation] = useState<string>(SORT.population);
   const [searchInput, setSearchInput] = useState<string>('');
   const sortParams = [sortName, sortPopulation];
 
@@ -39,35 +33,29 @@ const App = () => {
   const changeSortParams = useCallback(
     (event: React.MouseEvent<HTMLInputElement>) => {
       const param = event.currentTarget.value;
-      if (param.includes('name')) {
-        if (param.includes('▲')) {
-          setSortName('name ▼');
-          return;
+
+      if (param.startsWith(SORT.name)) {
+        if (param.includes(SORT.upSymbol)) {
+          setSortName(SORT.nameDown);
+        } else if (param.includes(SORT.downSymbol)) {
+          setSortName(SORT.nameUp);
+        } else {
+          setSortName(SORT.nameUp);
         }
-        if (param.includes('▼')) {
-          setSortName('name ▲');
-          return;
-        }
-        setSortName('name');
+        setSortPopulation(SORT.population);
+        return;
       }
-      if (param.includes('population')) {
-        if (param.includes('▲')) {
-          setSortPopulation('population ▼');
-          return;
+
+      if (param.startsWith(SORT.population)) {
+        if (param.includes(SORT.upSymbol)) {
+          setSortPopulation(SORT.populationDown);
+        } else if (param.includes(SORT.downSymbol)) {
+          setSortPopulation(SORT.populationUp);
+        } else {
+          setSortPopulation(SORT.populationUp);
         }
-        if (param.includes('▼')) {
-          setSortPopulation('population ▲');
-          return;
-        }
-        setSortPopulation('population');
-      }
-      if (param === 'population') {
-        setSortPopulation('population ▲');
-        setSortName('name');
-      }
-      if (param === 'name') {
-        setSortName('name ▲');
-        setSortPopulation('population');
+        setSortName(SORT.name);
+        return;
       }
     },
     []
@@ -98,25 +86,22 @@ const App = () => {
       return;
     }
     let values = Object.entries(data);
-    console.log('searchInput1', searchInput);
-
     if (searchInput) {
-      console.log('searchInput', searchInput);
       values = values.filter(([name]) =>
         name.toLowerCase().includes(searchInput.toLowerCase())
       );
     }
-    if (sortName === 'name ▲') {
-      values.sort((a, b) => a[0].localeCompare(b[0]));
-      return Object.fromEntries(values);
-    }
-    if (sortName === 'name ▼') {
-      values.sort((a, b) => b[0].localeCompare(a[0]));
+    if (sortName === SORT.nameUp || sortName === SORT.nameDown) {
+      values.sort((a, b) =>
+        sortName === SORT.nameUp
+          ? a[0].localeCompare(b[0])
+          : b[0].localeCompare(a[0])
+      );
       return Object.fromEntries(values);
     }
     if (
-      sortPopulation === 'population ▲' ||
-      sortPopulation === 'population ▼'
+      sortPopulation === SORT.populationUp ||
+      sortPopulation === SORT.populationDown
     ) {
       values.sort((a, b) => {
         const positionFirst = a[1].data.find((elem) => elem.year === year);
@@ -125,7 +110,7 @@ const App = () => {
         const A = positionFirst?.population || 0;
         const B = positionSecond?.population || 0;
 
-        return sortPopulation === 'population ▲' ? A - B : B - A;
+        return sortPopulation === SORT.populationUp ? A - B : B - A;
       });
 
       return Object.fromEntries(values);
@@ -137,23 +122,26 @@ const App = () => {
     setYear(Number(event.target.value));
   }, []);
 
-  const changeColumns = useCallback((event: ChangeEvent<HTMLInputElement>) => {
-    const newColumns = event.target.value;
-    if (event.target.checked) {
-      addColumns([...checkedParams, { parameter: newColumns }]);
-    } else {
-      const position = checkedParams.findIndex(
-        (elem) => elem.parameter === newColumns
-      );
-      const columns = [...checkedParams];
-      columns.splice(position, 1);
-      addColumns(columns);
-    }
-  }, []);
+  const changeColumns = useCallback(
+    (event: ChangeEvent<HTMLInputElement>) => {
+      const newColumns = event.target.value;
+      if (event.target.checked) {
+        addColumns([...checkedParams, { parameter: newColumns }]);
+      } else {
+        const position = checkedParams.findIndex(
+          (elem) => elem.parameter === newColumns
+        );
+        const columns = [...checkedParams];
+        columns.splice(position, 1);
+        addColumns(columns);
+      }
+    },
+    [checkedParams]
+  );
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await fetch('/owid-co2-data.json');
+      const response = await fetch(NAME.URL_JSON);
       const result = await response.json();
       setData(result);
     };

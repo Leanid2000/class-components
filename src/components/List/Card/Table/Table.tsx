@@ -1,5 +1,6 @@
 import { memo } from 'react';
-import { type Data, type Parameters } from '../interfaces/interfaces';
+import { type Data, type Parameters } from '../../../../interfaces/interfaces';
+import { NAME } from '../../../../constants/constants';
 
 const Table = memo(
   ({ data, checkedParams }: { data: Data; checkedParams: Parameters[] }) => {
@@ -25,7 +26,7 @@ const Table = memo(
               }
               return (
                 <td className="w-60 text-center" key={num}>
-                  {param || 'N/A'}
+                  {param || NAME.NOTFOUND}
                 </td>
               );
             })}

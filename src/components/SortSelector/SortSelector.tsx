@@ -1,5 +1,5 @@
 import { memo } from 'react';
-import { Button } from './Button';
+import { Button } from './Button/Button';
 
 export const SortSelector = memo(
   ({
