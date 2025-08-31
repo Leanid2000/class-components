@@ -36,38 +36,42 @@ const App = () => {
     setCheckedParams(columns);
   }, []);
 
-  const changeSortParams = useCallback((param: string) => {
-    if (param.includes('name')) {
-      if (param.includes('▲')) {
-        setSortName('name ▼');
-        return;
+  const changeSortParams = useCallback(
+    (event: React.MouseEvent<HTMLInputElement>) => {
+      const param = event.currentTarget.value;
+      if (param.includes('name')) {
+        if (param.includes('▲')) {
+          setSortName('name ▼');
+          return;
+        }
+        if (param.includes('▼')) {
+          setSortName('name ▲');
+          return;
+        }
+        setSortName('name');
       }
-      if (param.includes('▼')) {
-        setSortName('name ▲');
-        return;
+      if (param.includes('population')) {
+        if (param.includes('▲')) {
+          setSortPopulation('population ▼');
+          return;
+        }
+        if (param.includes('▼')) {
+          setSortPopulation('population ▲');
+          return;
+        }
+        setSortPopulation('population');
       }
-      setSortName('name');
-    }
-    if (param.includes('population')) {
-      if (param.includes('▲')) {
-        setSortPopulation('population ▼');
-        return;
-      }
-      if (param.includes('▼')) {
+      if (param === 'population') {
         setSortPopulation('population ▲');
-        return;
+        setSortName('name');
       }
-      setSortPopulation('population');
-    }
-    if (param === 'population') {
-      setSortPopulation('population ▲');
-      setSortName('name');
-    }
-    if (param === 'name') {
-      setSortName('name ▲');
-      setSortPopulation('population');
-    }
-  }, []);
+      if (param === 'name') {
+        setSortName('name ▲');
+        setSortPopulation('population');
+      }
+    },
+    []
+  );
 
   const changeSearchInput = useCallback(
     (event: ChangeEvent<HTMLInputElement>) => {
@@ -86,8 +90,6 @@ const App = () => {
       (year, elem) => (elem.data[0].year < year ? elem.data[0].year : year),
       9000
     );
-    console.log([firstYear, lastYear]);
-    // setYear(lastYear);
     return [firstYear, lastYear];
   }, [data]);
 
@@ -131,10 +133,22 @@ const App = () => {
     return data;
   }, [data, sortPopulation, sortName, searchInput, year]);
 
-  // const changeSortParams
-
   const changeYear = useCallback((event: ChangeEvent<HTMLSelectElement>) => {
     setYear(Number(event.target.value));
+  }, []);
+
+  const changeColumns = useCallback((event: ChangeEvent<HTMLInputElement>) => {
+    const newColumns = event.target.value;
+    if (event.target.checked) {
+      addColumns([...checkedParams, { parameter: newColumns }]);
+    } else {
+      const position = checkedParams.findIndex(
+        (elem) => elem.parameter === newColumns
+      );
+      const columns = [...checkedParams];
+      columns.splice(position, 1);
+      addColumns(columns);
+    }
   }, []);
 
   useEffect(() => {
@@ -142,7 +156,6 @@ const App = () => {
       const response = await fetch('/owid-co2-data.json');
       const result = await response.json();
       setData(result);
-      console.log(result);
     };
     fetchData();
   }, []);
@@ -173,10 +186,7 @@ const App = () => {
           />
         </div>
 
-        <ColumnSelection
-          checkedParams={checkedParams}
-          addColumns={addColumns}
-        />
+        <ColumnSelection changeColumns={changeColumns} />
         <List data={fillterData} checkedParams={checkedParams} year={year} />
       </Suspense>
     </div>
