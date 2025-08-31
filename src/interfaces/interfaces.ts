@@ -1,28 +1,29 @@
-import type { Form } from '../schemes/form';
-
-export type Id =
-  | 'name'
-  | 'age'
-  | 'email'
-  | 'password'
-  | 'passwordRepeat'
-  | 'gender'
-  | 'checked'
-  | 'country'
-  | 'image';
-
-export type StoreForm = Omit<Form, 'image'> & {
-  image: string;
+export type Parameters = {
+  parameter: string;
 };
 
-interface Error {
-  message: string;
-  path: string[];
-}
-export interface Errors {
-  issues: Error[];
-}
+export type Data = {
+  year: number;
+  population: number;
+  co2: number;
+  co2_per_capita: number;
+  methane?: number;
+  oil_co2?: number;
+  temperature_change_from_co2?: number;
+};
 
-export interface ValidationErrors {
-  [key: string]: string;
-}
+type DataInf = {
+  data: Data[];
+  iso_code: string;
+};
+
+export type Response = {
+  [key: string]: DataInf;
+};
+
+export type SortParam =
+  | 'name ▲'
+  | 'name ▼'
+  | 'name'
+  | 'population ▲'
+  | 'population ▼';

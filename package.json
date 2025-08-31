@@ -21,9 +21,6 @@
     ],
     "*.{css,scss}": [
       "prettier --write"
-    ],
-    "*.{md,json}": [
-      "prettier --write"
     ]
   },
   "dependencies": {
